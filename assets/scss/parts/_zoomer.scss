@@ -1,0 +1,80 @@
+@use 'variables' as *; // Use the variables globally in this file
+
+.zoomer-post {
+    /* Headings with Emojis */
+    h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: $primary-color;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 3px solid $primary-color;
+        padding-bottom: $small-spacing;
+        margin-bottom: $medium-spacing;
+        line-height: 1.5;
+    }
+
+    h2::before {
+        content: "🎯"; /* Emoji before the heading */
+    }
+
+    /* Step Section Background with Emoji */
+    .step-section {
+        background-color: #f1f1f1;  /* Soft background for the steps */
+        padding: $large-spacing;
+        border-radius: 8px;
+        margin-bottom: $large-spacing;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .step-section::before {
+        content: "🚀"; /* Emoji before the section */
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    /* Code Block Styling */
+    .step-section pre {
+        background-color: #333;  /* Dark background for the code block */
+        color: white;
+        border-radius: 6px;
+        padding: 20px;
+        margin-top: $medium-spacing;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    /* Paragraphs with more space and playful look */
+    p {
+        margin-bottom: $large-spacing;
+        line-height: 1.7;  /* Better readability */
+        font-size: 1.1rem;
+    }
+
+    ul {
+        margin-bottom: $medium-spacing;
+        padding-left: 20px;
+    }
+
+    /* Adding more fun styles for emojis in the content */
+    .step-section li::before {
+        content: "✨";  /* Glitter emoji before list items */
+        margin-right: 10px;
+    }
+
+    /* General Button Link Styling (like Read More) */
+    .read-more {
+        font-size: 1.2rem;
+        color: #007bff; /* Use blue color for the "Read More" links */
+        text-decoration: none;
+        font-weight: bold;
+        padding-left: 4px;
+        line-height: 1;
+        vertical-align: middle;
+    }
+
+    .read-more:hover {
+        color: #0056b3;
+    }
+}

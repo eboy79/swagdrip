@@ -1,0 +1,48 @@
+/* _global.scss */
+@use 'variables' as *;  /* Use the updated way of importing variables */
+
+
+.blog-feed {
+  margin: $base-spacing auto; /* Use base-spacing for top and bottom margin */
+  display: flex;
+  flex-direction: column;
+}
+
+.post {
+  padding: $base-spacing;
+  border-radius: $border-radius; /* Use border-radius variable for rounded corners */
+}
+
+.post-title {
+  font-size: $font-size-large; /* Use font-size-large for the post title */
+  font-weight: bold;
+}
+
+.post-title a {
+  text-decoration: none;
+  color: $text-color; /* Use text-color variable */
+}
+
+.post-description {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.post-excerpt {
+  font-size: $font-size-small; /* Use font-size-small for the excerpt */
+  color: rgba(0, 0, 0, 0.7);
+  margin: $small-spacing 0; /* Use small-spacing for margin */
+}
+
+.read-more {
+  font-size: $font-size-medium; /* Use font-size-medium for the read-more link */
+  color: $primary-color;   /* Use primary color for the arrow */
+  text-decoration: none;   /* Remove underline */
+  font-weight: bold;       /* Make the arrow bolder */
+  padding-left: 4px;
+  line-height: 1;          /* Ensure the arrow is vertically centered */
+  vertical-align: middle;  /* Align vertically with text */
+}
+
+.read-more:hover {
+  color: $primary-color-dark; /* Use darker primary color on hover */
+}

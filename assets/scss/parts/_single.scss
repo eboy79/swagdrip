@@ -1,0 +1,95 @@
+/* _global.scss */
+@use 'variables' as *;  /* Use the updated way of importing variables */
+
+
+/* Content Wrapper - Restrict to 800px */
+.content-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto; /* Center the content */
+  padding-bottom: $small-spacing; /* Padding at the bottom of the content */
+}
+
+/* Single Post Layout */
+.single-post {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Post Title Styling */
+.post-title {
+  font-size: 2rem; /* Larger title */
+  font-weight: 700; /* Bold for emphasis */
+  margin-bottom: $medium-spacing; /* Space below title */
+  line-height: 1.4; /* Improve line height for readability */
+}
+
+/* Post Content Styling */
+.single-post .post-content {
+  font-size: 1.1rem; /* Slightly larger content text */
+  line-height: 1.7; /* Improve line height for readability */
+  color: rgba(0, 0, 0, 0.8); /* Slightly lighter text color */
+  margin-bottom: $small-spacing; /* Add space below the content */
+}
+.single-post  .post-title {
+  font-size: 2rem; /* Larger title */
+  font-weight: 700; /* Bold for emphasis */
+  margin-bottom: $large-spacing; /* Space below title */
+  line-height: 1.4; /* Improve line height for readability */
+}
+/* Featured Image - Default */
+.post-thumbnail {
+  width: 100%;
+  text-align: center;
+  margin-bottom: $base-spacing; /* Space below the image */
+}
+
+.post-thumbnail img {
+  max-width: 100%;
+  height: auto;
+  border-radius: $base-spacing; /* Use base-spacing for border-radius */
+}
+/* Featured Image Spacing */
+.single-post .post-thumbnail {
+  margin-bottom: $medium-spacing; /* Adds spacing below the featured image */
+  padding-top: $medium-spacing; /* Padding at the top */
+  padding-bottom: $medium-spacing; /* Padding at the bottom */
+}
+
+.single-post .post-thumbnail img {
+  max-width: 100%;
+  height: auto;
+  border-radius: $base-spacing;
+}
+/* Default Size if No Custom Field */
+.default-featured img {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Custom Small Featured Image */
+.small-featured img {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Custom Large Featured Image */
+.large-featured img {
+  max-width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+}
+/* Alternatively, for a more general solution */
+.content-container img {
+  margin-top: $large-spacing; /* More space between the image and following content */
+}
+
+.post-content h2, .post-content h3, .post-content h4 {
+  margin-top: $small-spacing;   /* Reduce space above */
+  margin-bottom: $medium-spacing; /* Keep space below */
+}
+
+.post-content p {
+  margin-top: 0; /* Remove top margin */
+  margin-bottom: $medium-spacing; /* Ensure spacing after paragraphs */
+}

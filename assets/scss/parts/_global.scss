@@ -1,0 +1,159 @@
+/* _global.scss */
+@use 'variables' as *;  /* Use the updated way of importing variables */
+
+
+/* Prevent Browser Font Rendering Issues */
+html {
+    image-rendering: crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    backface-visibility: hidden;
+}
+
+/* Global Resets */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: $font-primary;  /* Use the primary font variable */
+}
+* {
+    backface-visibility: hidden;
+  }
+/* Prevent Horizontal Scroll & Improve Text Rendering */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+    -webkit-text-stroke: 0.2px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Body Styles */
+body {
+    background: $background-color;  /* Use the background color variable */
+    color: $text-color;  /* Use the text color variable */
+    font-family: $font-primary;
+}
+/* General Paragraph Spacing */
+/* Section Spacing */
+section {
+    margin-top: $large-spacing; /* Space at the top of each section */
+    margin-bottom: $large-spacing; /* Space at the bottom of each section */
+  }
+  
+  /* For headings in each section */
+  h2, h3 {
+    margin-bottom: $medium-spacing; /* Space below headings for better readability */
+  }
+  
+  /* Content under each heading, including paragraphs */
+  p {
+    margin-bottom: $medium-spacing; /* Ensures enough space between paragraphs */
+    line-height: 1.8; /* Increases line height for better legibility */
+  }
+/* Global Image Styles */
+img {
+    image-rendering: crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: $large-spacing; /* Adjust this value to control the space below the image */
+
+}
+  
+  /* Alternatively, for a more general solution */
+  .content-container img {
+    margin-top: $medium-spacing; /* More space between the image and following content */
+  }
+  
+/* Ensure SVGs Render with Vector Precision */
+img[src$=".svg"] {
+    shape-rendering: geometricPrecision;
+    text-rendering: optimizeLegibility;
+    image-rendering: -webkit-optimize-contrast;
+}
+
+svg {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+/* Global Content Width */
+.content-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: $base-spacing;  /* Use spacing variable */
+}
+
+/* Code Styling */
+/* Code Styling */
+pre code {
+    display: block;
+    padding: $base-spacing;
+    background-color: #f4f4f4;  /* Lighter background color for the code blocks */
+    border-radius: 8px;
+    font-family: $font-secondary;
+    font-size: 16px;
+    line-height: 1.7;  /* Increased line height for readability */
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    margin-bottom: $medium-spacing;  /* Space below code blocks */
+}
+
+/* Paragraphs and other content */
+p {
+    margin-bottom: $large-spacing; /* More space below paragraphs */
+}
+
+/* Improve Heading Styles */
+h1, h2, h3 {
+    font-size: 1.5rem;
+    margin-bottom: $small-spacing;
+    line-height: 1.4;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+/* Add some more space to the main content */
+.content-container {
+    padding: $base-spacing;
+}
+/* Target only h1 elements with the class entry-title */
+/* Apply the halo effect to the WordPress title */
+h1.entry-title span.wordpress {
+    display: inline-block;
+    text-shadow: 0 0 10px rgba(255, 255, 0, 1), 0 0 20px rgba(255, 255, 0, 0.8), 0 0 30px rgba(255, 255, 0, 0.5);
+  }
+  .yellow-halo {
+    position: relative;
+    display: inline-block;
+
+}
+
+.yellow-halo::before {
+    content: "";
+    position: absolute;
+    top: -27px;
+    left: 50%;
+    transform: translateX(-50%) rotate(358deg);  /* Center it horizontally and rotate */
+    width: 100%;  /* Adjust the size to fit */
+    height: 100%;
+    background-image: url('/wp-content/themes/swagdrip/img/halo.svg'); /* Path to your halo SVG */
+    background-size: contain;  /* Ensures it fits inside the wrapper */
+    background-repeat: no-repeat;
+    z-index: -1;  /* Place the halo behind the text */
+}

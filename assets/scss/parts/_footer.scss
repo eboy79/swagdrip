@@ -1,0 +1,53 @@
+/* _global.scss */
+@use 'variables' as *;  /* Use the updated way of importing variables */
+
+
+/* Footer */
+footer {
+  width: 100%;
+  padding: $base-spacing 0; /* Use base-spacing variable for padding */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $small-spacing; /* Use small-spacing variable for gap between elements */
+}
+
+/* Footer Container */
+footer .container {
+  width: 100%;
+  max-width: 1200px;
+  margin: $small-spacing auto 0; /* Use small-spacing for margin */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Ensures everything stays left-aligned */
+  gap: $small-spacing; /* Use small-spacing for gap between elements */
+  padding: 0 $base-spacing; /* Use base-spacing for horizontal padding */
+}
+
+/* GitHub icon */
+.github-icon img {
+  width: 19px;
+  height: auto;
+  display: block;
+  margin-bottom: $small-spacing; /* Use small-spacing for margin */
+}
+
+/* Email link */
+.footer-email {
+  text-decoration: none;
+  color: $text-color; /* Use text-color variable */
+  font-weight: 500;
+}
+
+.footer-email:hover {
+  text-decoration: underline;
+}
+
+/* Footer Underline */
+.footer-underline {
+  width: 100%;
+  max-width: 1200px;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.1);
+  margin: $small-spacing auto 0; /* Use small-spacing for margin */
+}

@@ -1,0 +1,31 @@
+{
+  "name": "swagdrip",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "rollup.config.js",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^28.0.2",
+    "@rollup/plugin-node-resolve": "^16.0.0",
+    "@rollup/plugin-replace": "^6.0.2",
+    "@rollup/plugin-terser": "^0.4.4",
+    "autoprefixer": "^10.4.20",
+    "cssnano": "^5.1.15",
+    "rollup": "^4.32.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-scss": "^4.0.1",
+    "sass": "^1.83.4"
+  },
+  "dependencies": {
+    "gsap": "^3.12.7",
+    "lenis": "^1.1.20"
+  }
+}
