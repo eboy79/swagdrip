@@ -1,0 +1,140 @@
+.terminal-window {
+  text-align: left;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  z-index: 1000;
+  overflow-y: auto;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px); /* GLASS EFFECT */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Terminal Header */
+.terminal-window header {
+  background: rgba(45, 45, 45, 0.9);
+  height: 32px;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  justify-content: flex-start;
+  gap: 8px;
+  font-weight: bold;
+  color: #bbb;
+}
+
+/* Terminal Buttons */
+.terminal-window header .button {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0px 0px 3px rgba(255, 255, 255, 0.3);
+}
+
+.terminal-window header .button.green {
+  background: #3BB662;
+}
+
+.terminal-window header .button.yellow {
+  background: #E5C30F;
+}
+
+.terminal-window header .button.red {
+  background: #E75448;
+}
+
+/* Terminal Body */
+.terminal {
+  font-family: "Fira Code", Menlo, Monaco, "Consolas", "Courier New", "Courier";
+  font-size: 12px;
+  background: rgba(37, 41, 46, 0.85);
+  padding: 15px;
+  border-radius: 0 0 12px 12px;
+  box-sizing: border-box;
+  width: 100%;
+  overflow: auto;
+  max-height: 60vh;
+  color: #ddd;
+}
+
+/* Stats */
+.stat-value {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.3);
+}
+
+/* Events List */
+.events-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 10px 0;
+  font-size: 12px;
+}
+
+.events-list li {
+  padding: 5px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.events-list li:last-child {
+  border-bottom: none;
+}
+
+/* Neon Glow for Page Load Info */
+#page-load-info {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 12px;
+  border-radius: 5px;
+  display: block;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+}
+
+/* Toggle Button */
+#toggle-stats {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 1000;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease-in-out;
+}
+
+#toggle-stats:hover {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.3);
+}
+
+#toggle-stats svg {
+  fill: white;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Collapsed State */
+.collapsed {
+  display: none;
+}
+
+#page-load-info.collapsed {
+  transform: translateX(100%);
+  opacity: 0;
+}

@@ -46,14 +46,14 @@ add_action('init', 'swagdrip_disable_heartbeat');
 function swagdrip_enqueue_assets() {
     wp_enqueue_style('theme-style', get_template_directory_uri() . '/dist/main.min.css', [], '1.0');
 
-    // Remove jQuery only on frontend, keep it in admin panel
     if (!is_admin()) {
         wp_deregister_script('jquery');
     }
 
-    wp_enqueue_script('main-js', get_template_directory_uri() . '/dist/main.min.js', [], false, true);
+    wp_enqueue_script('main-js', get_template_directory_uri() . '/dist/main.min.js', [], filemtime(get_template_directory() . '/dist/main.min.js'), true);
 }
 add_action('wp_enqueue_scripts', 'swagdrip_enqueue_assets');
+
 
 // Remove WordPress Bloat
 function swagdrip_cleanup() {
