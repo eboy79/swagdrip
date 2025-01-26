@@ -5,8 +5,7 @@ import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
 import postcss from 'rollup-plugin-postcss';
 import autoprefixer from 'autoprefixer';
-import cssnano from 'cssnano';
-import sass from 'sass'; // Explicitly use the sass library
+import path from 'path';
 
 export default [
   {
@@ -14,7 +13,7 @@ export default [
     output: {
       file: 'dist/main.min.js',
       format: 'iife',
-      sourcemap: true,
+      sourcemap: true
     },
     plugins: [
       commonjs(),
@@ -25,28 +24,19 @@ export default [
         preventAssignment: true
       }),
       terser()
-    ],
-    watch: {
-      clearScreen: false
-    }
+    ]
   },
   {
-    input: 'assets/scss/main.scss',
+    input: path.resolve('assets/scss/main.scss'),  // Ensure absolute path
     output: {
-      file: 'dist/main.min.css',
+      file: 'dist/main.min.css'
     },
     plugins: [
       postcss({
-        plugins: [
-          autoprefixer,
-          cssnano({
-            preset: ['default', { svgo: false }] // Optimize the CSS
-          })
-        ],
-        extract: 'dist/main.min.css',
+        plugins: [autoprefixer],
+        extract: true, // Ensures CSS gets written to `dist/main.min.css`
         minimize: true,
-        sourceMap: true,
-        use: ['sass'], // Use sass for SCSS compilation
+        sourceMap: true
       })
     ]
   }

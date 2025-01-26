@@ -37,6 +37,41 @@ body {
     color: $text-color;  /* Use the text color variable */
     font-family: $font-primary;
 }
+/* Fix Bullet Point List Styling */
+/* Remove default bullet points */
+/* Improve list styling */
+ul {
+    list-style: none; /* Remove default bullets */
+    padding-left: .2rem; /* Add some left padding */
+}
+
+ul li::before {
+    content: "➤"; /* Custom bullet */
+    color: #000; /* Adjust to fit your theme */
+    font-size: 1rem;
+    margin-right: 0.5rem;
+}
+
+li {
+    margin-bottom: 0.75rem; /* Increase spacing between list items */
+}
+
+
+ul li {
+    margin-bottom: 0.75rem; /* Adds space between list items */
+    line-height: 1.6; /* Improves readability */
+}
+
+/* Optional: Customize the bullet style */
+ul li::marker {
+    color: #000; /* Adjust bullet color if needed */
+    font-size: 1.2em; /* Makes bullets more noticeable */
+}
+ul pre {
+    margin-top: 0.5rem;  /* Space above code blocks */
+    margin-bottom: 1rem; /* Space below code blocks */
+}
+
 /* General Paragraph Spacing */
 /* Section Spacing */
 section {
@@ -108,7 +143,7 @@ pre code {
 
 /* Paragraphs and other content */
 p {
-    margin-bottom: $large-spacing; /* More space below paragraphs */
+    margin-bottom: $medium-spacing; /* More space below paragraphs */
 }
 
 /* Improve Heading Styles */

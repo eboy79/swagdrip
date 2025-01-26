@@ -85,11 +85,7 @@
 }
 
 .post-content h2, .post-content h3, .post-content h4 {
-  margin-top: $small-spacing;   /* Reduce space above */
+  margin-top: $large-spacing;   /* Reduce space above */
   margin-bottom: $medium-spacing; /* Keep space below */
 }
 
-.post-content p {
-  margin-top: 0; /* Remove top margin */
-  margin-bottom: $medium-spacing; /* Ensure spacing after paragraphs */
-}
