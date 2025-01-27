@@ -103,4 +103,40 @@ function custom_title_with_yellow_halo($title) {
 add_filter('the_title', 'custom_title_with_yellow_halo');
 
 
-?>
+// Register Custom Post Type: Snippets
+function register_snippet_post_type() {
+    $args = array(
+        "label"  => "Snippets",
+        "public" => true,
+        "show_in_rest" => true,
+        "supports" => array("title", "editor"),
+        "menu_icon" => "dashicons-editor-code",
+        "rewrite" => array("slug" => "snippets"),
+    );
+    register_post_type("snippet", $args);
+}
+add_action("init", "register_snippet_post_type", 9); // Ensures it runs before taxonomies
+
+function register_snippet_category_taxonomy() {
+    register_taxonomy('snippet_category', ['snippet'], [ // <-- Ensure 'snippet' is here
+        'hierarchical'          => false,
+        'public'                => true,
+        'show_ui'               => true,
+        'show_admin_column'     => true,
+        'query_var'             => true,
+        'rewrite'               => ['slug' => 'snippet-category'],
+        'show_in_rest'          => true,
+        'labels'                => [
+            'name'              => __('Snippet Categories', 'textdomain'),
+            'singular_name'     => __('Snippet Category', 'textdomain'),
+            'search_items'      => __('Search Snippet Categories', 'textdomain'),
+            'all_items'         => __('All Snippet Categories', 'textdomain'),
+            'edit_item'         => __('Edit Snippet Category', 'textdomain'),
+            'update_item'       => __('Update Snippet Category', 'textdomain'),
+            'add_new_item'      => __('Add New Snippet Category', 'textdomain'),
+            'new_item_name'     => __('New Snippet Category Name', 'textdomain'),
+            'menu_name'         => __('Snippet Categories', 'textdomain'),
+        ]
+    ]);
+}
+add_action('init', 'register_snippet_category_taxonomy');

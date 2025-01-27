@@ -192,3 +192,11 @@ h1.entry-title span.wordpress {
     background-repeat: no-repeat;
     z-index: -1;  /* Place the halo behind the text */
 }
+.snippets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: $medium-spacing;
+    max-width: 1200px;
+    margin: 0 auto; // Center grid
+    padding-left: $medium-spacing; // Matches page title padding
+}

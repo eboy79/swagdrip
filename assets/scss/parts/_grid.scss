@@ -1,0 +1,31 @@
+// Define a mixin for reusable grid layouts
+@mixin grid($min-size: 200px, $gap: 8px) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax($min-size, 1fr));
+    gap: $gap;
+    max-width: 1400px;
+    margin: auto;
+    padding: 10px;
+}
+
+/* Responsive adjustments */
+@mixin grid-responsive {
+    @media (max-width: 1200px) {
+        .grid {
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        }
+    }
+
+    @media (max-width: 768px) {
+        .grid {
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        }
+    }
+
+    @media (max-width: 480px) {
+        .grid {
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        }
+    }
+}
+

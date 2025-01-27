@@ -1,7 +1,14 @@
-@use "parts/global";
-@use "parts/header";
-@use "parts/blog";
+@use "parts/global";   // Load global variables & resets first
+@use "parts/grid" as *; // Now grid mixins are available
+@use "parts/snippets";
+@use "parts/header";  
 @use "parts/footer";
+@use "parts/blog";
 @use "parts/single";
 @use "parts/zoomer";
 @use "parts/terminal";
+
+.grid {
+    @include grid();
+    @include grid-responsive;
+}

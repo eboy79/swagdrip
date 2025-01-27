@@ -4,6 +4,8 @@
         <div class="button green"></div>
         <div class="button yellow"></div>
         <div class="button red"></div>
+        <div class="terminal-title">mnrdsgn terminal</div>
+
     </header>
     <section class="terminal">
         <div id="load-stats" class="row">
