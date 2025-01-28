@@ -140,3 +140,35 @@ function register_snippet_category_taxonomy() {
     ]);
 }
 add_action('init', 'register_snippet_category_taxonomy');
+
+function update_snippet() {
+    if (!current_user_can('edit_posts') || !isset($_POST['post_id'], $_POST['content'], $_POST['title'])) {
+        wp_send_json_error(['message' => 'Unauthorized or missing parameters']);
+    }
+
+    $post_id = intval($_POST['post_id']);
+    $content = sanitize_textarea_field($_POST['content']); // Allow multiple lines
+    $title = sanitize_text_field($_POST['title']); // Sanitize new title
+    $slug = sanitize_title($title); // Generate new permalink slug
+
+    // Update the post
+    $updated_post = wp_update_post([
+        'ID'           => $post_id,
+        'post_title'   => $title,
+        'post_name'    => $slug, // Update slug
+        'post_content' => $content
+    ], true);
+
+    if (is_wp_error($updated_post)) {
+        wp_send_json_error(['message' => 'Error updating snippet']);
+    } else {
+        // Get new permalink
+        $new_permalink = get_permalink($post_id);
+
+        wp_send_json_success([
+            'message' => 'Snippet updated successfully',
+            'new_permalink' => $new_permalink
+        ]);
+    }
+}
+add_action('wp_ajax_update_snippet', 'update_snippet');

@@ -200,3 +200,17 @@ h1.entry-title span.wordpress {
     margin: 0 auto; // Center grid
     padding-left: $medium-spacing; // Matches page title padding
 }
+/* 1) Make numbered lists align nicely without “hanging” numbers */
+ol {
+    list-style-position: inside; /* Moves numbers inside the main text block */
+    margin-left: 0;             /* Remove default left indentation if desired */
+  }
+  
+  /* 2) Style for the horizontal rules (if you want to remove or soften them) */
+  hr {
+    border: none;               /* Remove the default border style */
+    height: 1px;                /* You can set a custom thickness if you want a thin line */
+    background-color: #ccc;     /* Pick a softer color or set to transparent if you want them gone */
+    margin: 2rem 0;             /* Add some breathing room above/below if you do keep them */
+  }
+  
