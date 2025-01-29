@@ -1,0 +1,443 @@
+@use 'variables' as *;  /* Use the updated way of importing variables */
+
+/* Modern Reset & Base */
+:root {
+    --neon-blue: #00f3ff;
+    --deep-space: #0a0f1c;
+    --cyber-purple: #b84ff5;
+    --matrix-green: #00ff9d;
+    --quantum-pink: #ff00ea;
+    --hologram-blur: 0 0 15px;
+  }
+  
+  /* Futuristic Container */
+  .wp-block-preformatted {
+    position: relative;
+    background: linear-gradient(145deg, var(--deep-space), #151c2e);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 8px 32px rgba(0, 243, 255, 0.1);
+    border: 1px solid rgba(0, 243, 255, 0.1);
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+  }
+  
+  .wp-block-preformatted:hover {
+    box-shadow: 0 12px 48px rgba(0, 243, 255, 0.2);
+  }
+  
+  /* Code Block Enhancement */
+  .wp-block-preformatted code {
+    font-family: 'JetBrains Mono', monospace;
+    color: #fff;
+    line-height: 1.6;
+    display: block;
+    overflow-x: auto;
+  }
+  
+  /* Language-specific styling */
+  .language-sql {
+    color: var(--neon-blue);
+    text-shadow: var(--hologram-blur) rgba(0, 243, 255, 0.4);
+  }
+  
+  .language-bash {
+    color: var(--matrix-green);
+    text-shadow: var(--hologram-blur) rgba(0, 255, 157, 0.4);
+  }
+  
+  /* Futuristic Headers */
+  .wp-block-heading {
+    background: linear-gradient(90deg, var(--neon-blue), var(--cyber-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin: 2.5rem 0 1.5rem;
+  }
+  
+  /* Terminal-style line numbers */
+  .wp-block-preformatted code {
+    counter-reset: line;
+  }
+  
+  .wp-block-preformatted code > * {
+    position: relative;
+    padding-left: 1.5em;
+  }
+  
+  .wp-block-preformatted code > *:before {
+    content: counter(line);
+    counter-increment: line;
+    position: absolute;
+    left: -1.5em;
+    color: rgba(255, 255, 255, 0.3);
+    text-align: right;
+    width: 1em;
+  }
+  
+  /* Cyberpunk Separators */
+  .wp-block-separator {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, 
+      transparent,
+      var(--neon-blue),
+      var(--cyber-purple),
+      var(--neon-blue),
+      transparent
+    );
+    margin: 3rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .wp-block-separator::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    animation: cyber-scan 3s linear infinite;
+  }
+  
+  /* Futuristic Lists */
+  .wp-block-list {
+    list-style: none;
+    padding-left: 1.5em;
+  }
+  
+  .wp-block-list li {
+    position: relative;
+    margin: 0.5em 0;
+  }
+  
+  .wp-block-list li::before {
+    content: '›';
+    position: absolute;
+    left: -1.5em;
+    color: var(--neon-blue);
+    font-weight: bold;
+    transform: scale(1.2);
+  }
+  
+  /* Inline Code Enhancement */
+  p code {
+    background: rgba(0, 243, 255, 0.1);
+    color: var(--neon-blue);
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    border: 1px solid rgba(0, 243, 255, 0.2);
+  }
+  
+  /* Animations */
+  @keyframes cyber-scan {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .wp-block-preformatted {
+      padding: 1.5rem;
+      font-size: 0.9em;
+    }
+    
+    .wp-block-heading {
+      font-size: 1.2em;
+    }
+  }
+  
+  /* Syntax Highlighting Enhancements */
+  .token.keyword {
+    color: var(--cyber-purple);
+    font-weight: 600;
+  }
+  
+  .token.function {
+    color: var(--quantum-pink);
+  }
+  
+  .token.string {
+    color: var(--matrix-green);
+  }
+  
+  .token.number {
+    color: var(--neon-blue);
+  }
+  
+  .token.comment {
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+  }
+  
+  /* High Contrast Mode */
+  @media (prefers-contrast: high) {
+    :root {
+      --neon-blue: #ffffff;
+      --cyber-purple: #ffffff;
+      --matrix-green: #ffffff;
+      --quantum-pink: #ffffff;
+      --hologram-blur: none;
+    }
+  }
+/* Copy button styles - refined version */
+.copy-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    padding: 4px 8px;
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+    opacity: 0;
+    backdrop-filter: blur(4px);
+    height: 24px;
+    line-height: 1;
+  }
+  
+  /* Show button on code block hover */
+  .wp-block-preformatted:hover .copy-button {
+    opacity: 1;
+  }
+  
+  .copy-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+   
+  }
+  
+  .copy-button:active {
+   
+  }
+  
+  /* Success state */
+  .copy-button.copied {
+    background: rgba(0, 255, 157, 0.15);
+    border-color: rgba(0, 255, 157, 0.3);
+  }
+  
+  /* Copy icon */
+  .copy-icon {
+    font-size: 12px;
+  }
+  
+  /* Reduce top padding on code blocks */
+  .wp-block-preformatted {
+    padding-top: 36px;
+  }
+  
+  /* Optional: Hide "Copy" text on small screens */
+  @media (max-width: 480px) {
+    .copy-text {
+      display: none;
+    }
+    
+    .copy-button {
+      padding: 4px;
+    }
+  }
+  
+  /* Add some padding to code blocks to prevent text overlap with button */
+  .wp-block-preformatted {
+    padding-top: 48px;
+  }
+
+  /* Terminal Window Styling */
+.wp-block-preformatted {
+    position: relative;
+    background: linear-gradient(150deg, #1a1d2d, #141925);
+    border-radius: 8px;
+    padding: 3rem 1.5rem 1.5rem;
+    margin: 2rem 0;
+    box-shadow: 0 8px 32px rgba(0, 243, 255, 0.1);
+    border: 1px solid rgba(0, 243, 255, 0.1);
+    overflow: hidden;
+    color: #505050;
+  }
+  
+  /* Terminal Header */
+  .wp-block-preformatted::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+  }
+  
+  /* Terminal Controls */
+  .wp-block-preformatted::after {
+    content: '● ● ●';
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 2px;
+  }
+  
+  /* Code Content */
+  .wp-block-preformatted code {
+    font-family: 'JetBrains Mono', monospace;
+    color: #818181;
+    display: block;
+    line-height: 1.5;
+    font-size: 0.9em;
+  }
+  
+  /* Command Prompt Styling */
+  .wp-block-preformatted code::before {
+    content: '❯';
+    color: #00f3ff;
+    margin-right: 8px;
+    font-weight: bold;
+  }
+  
+  /* CLI Commands Highlighting */
+  .wp-block-preformatted code .command {
+    color: #00f3ff;
+  }
+  
+  .wp-block-preformatted code .param {
+    color: #ff9d00;
+  }
+  
+  .wp-block-preformatted code .string {
+    color: #00ff9d;
+  }
+  
+  /* Hover Effect */
+  .wp-block-preformatted:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 48px rgba(0, 243, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  /* Syntax Highlighting for WP-CLI */
+  code .wp-command {
+    color: #00f3ff;
+    font-weight: 500;
+  }
+  
+  code .wp-subcommand {
+    color: #ff9d00;
+  }
+  
+  code .wp-flag {
+    color: #ff00ea;
+  }
+  
+  code .wp-value {
+    color: #00ff9d;
+  }
+  
+  /* Copy Button Refinements */
+  .copy-button {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    padding: 3px 8px;
+    color: #fff;
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+    z-index: 10;
+    height: 20px;
+  }
+  
+  .copy-button:hover {
+    opacity: 1;
+    background: rgba(0, 243, 255, 0.2);
+    border-color: rgba(0, 243, 255, 0.3);
+  }
+  
+  /* Success Animation */
+  @keyframes copy-success {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+  }
+  
+  .copy-button.copied {
+    animation: copy-success 0.3s ease;
+    background: rgba(0, 255, 157, 0.2);
+    border-color: rgba(0, 255, 157, 0.4);
+  }
+  
+  /* Heading Enhancements */
+  .wp-block-heading {
+    color: #00f3ff;
+    font-weight: 700;
+    margin: 2rem 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .wp-block-heading strong {
+    background: linear-gradient(90deg, #00f3ff, #ff00ea);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  /* Code in Text */
+  p code {
+    background: rgba(0, 243, 255, 0.1);
+    color: #00f3ff;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9em;
+    border: 1px solid rgba(0, 243, 255, 0.2);
+  }
+  
+  /* List Styling */
+  .wp-block-list {
+    list-style: none;
+    padding-left: 1.5em;
+  }
+  
+  .wp-block-list li {
+    position: relative;
+    margin: 0.5em 0;
+  }
+  
+  .wp-block-list li::before {
+    content: '▸';
+    position: absolute;
+    left: -1.5em;
+    color: #00f3ff;
+  }

@@ -44,11 +44,13 @@ get_header(); ?>
                     while ($query->have_posts()) {
                         $query->the_post();
                         $post_id = get_the_ID();
+                        $bg_color = get_post_meta($post_id, 'snippet_bg_color', true);
+                        $bg_style = $bg_color ? "style='background-color: {$bg_color}'" : '';
                         $post_content = trim(get_post_field('post_content', $post_id));
                         $post_title = get_the_title();
+                    
+                        echo "<div class='snippet' data-id='{$post_id}' data-expanded='false' {$bg_style}>";
 
-                        echo "<div class='snippet' data-id='{$post_id}' data-expanded='false'>";
-                        
                         // Snippet Title with inline edit
                         echo "<div class='snippet-title'>";
                         echo "<span class='title-display' data-id='{$post_id}'>{$post_title}</span>";
@@ -59,7 +61,7 @@ get_header(); ?>
                         echo "</div>"; 
 
                         // Snippet Content (Editable)
-                        echo "<pre class='snippet-content' data-id='{$post_id}' onclick='copySnippet(this)'><code>" . esc_html($post_content ?: 'No content available.') . "</code></pre>";
+                        echo "<pre class='snippet-content' data-id='{$post_id}' onclick='copySnippet(this)'><code class='language-bash'>" . esc_html($post_content ?: 'No content available.') . "</code></pre>";
 
                         echo "</div>"; // Close snippet
                     }
@@ -98,7 +100,10 @@ function copySnippet(element) {
     snippet.classList.add("copied");
     setTimeout(() => snippet.classList.remove("copied"), 1000);
 }
-
+function updatePreviewColor(input) {
+    const snippet = input.closest('.snippet');
+    snippet.style.backgroundColor = input.value;
+}
 function toggleEdit(icon) {
     let snippetContainer = icon.closest('.snippet');
     let postId = icon.getAttribute("data-id");
@@ -108,6 +113,16 @@ function toggleEdit(icon) {
     let isEditing = icon.getAttribute("data-editing") === "true";
 
     if (!isEditing) {
+        const currentColor = snippetContainer.style.backgroundColor || '#ffffff';
+        const colorPicker = `
+            <div class="color-picker-container">
+                <input type="color" 
+                       class="snippet-color-picker" 
+                       value="${currentColor}"
+                       oninput="updatePreviewColor(this)">
+            </div>
+        `;
+        snippetContainer.insertAdjacentHTML('beforeend', colorPicker);
         // Convert title to input field
         let titleInput = document.createElement("input");
         titleInput.value = titleBlock.textContent;
@@ -128,16 +143,25 @@ function toggleEdit(icon) {
         icon.setAttribute("data-editing", "true");
 
         textarea.addEventListener("input", () => checkOverflow(snippetContainer));
+        // Add editing class when entering edit mode
+        snippetContainer.classList.add('editing');
 
     } else {
         let updatedTitle = snippetContainer.querySelector(".edit-title").value;
         let updatedContent = snippetContainer.querySelector(".edit-textarea").value;
 
         let formData = new FormData();
+
+        const colorPicker = snippetContainer.querySelector('.snippet-color-picker');
+        const updatedColor = colorPicker ? colorPicker.value : '';
+
         formData.append('action', 'update_snippet');
         formData.append('post_id', postId);
         formData.append('title', updatedTitle);
         formData.append('content', updatedContent);
+        formData.append('bg_color', updatedColor);
+        // Add nonce to your formData
+        formData.append('security', '<?php echo wp_create_nonce("snippet_nonce"); ?>');
 
         fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
             method: 'POST',
@@ -161,9 +185,9 @@ function toggleEdit(icon) {
                 icon.setAttribute("data-editing", "false");
 
                 checkOverflow(snippetContainer);
+                // Remove editing class after successful save
+                snippetContainer.classList.remove('editing');
 
-                // Show updated permalink
-                alert("Updated! New permalink: " + data.new_permalink);
             } else {
                 alert("Error saving snippet!");
             }

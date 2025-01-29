@@ -7,8 +7,4 @@
 @use "parts/single";
 @use "parts/zoomer";
 @use "parts/terminal";
-
-.grid {
-    @include grid();
-    @include grid-responsive;
-}
+@use "parts/claude";

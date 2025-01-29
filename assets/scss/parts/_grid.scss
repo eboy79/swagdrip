@@ -1,51 +1,42 @@
-// 🔹 Define a mixin for reusable grid layouts
-// 🔹 Grid Layout Adjustments
+@use 'variables' as *;  /* Use the updated way of importing variables */
+
 @mixin grid($min-size: 240px, $gap: 10px) {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax($min-size, 1fr));
     gap: $gap;
+    width: 100%;
     max-width: 1400px;
-    margin: auto;
+    margin: 0 auto;
     padding: 10px;
 }
 
-/* 🔹 Responsive adjustments */
-@mixin grid-responsive {
+.grid-container {
+    @include grid(240px, $medium-spacing); // Default grid
+
     @media (max-width: 1200px) {
-        .snippets-grid {
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 10px;
-        }
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 10px;
     }
 
     @media (max-width: 992px) {
-        .snippets-grid {
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 8px;
-        }
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 8px;
     }
 
     @media (max-width: 768px) {
-        .snippets-grid {
-            grid-template-columns: repeat(2, 1fr); // ✅ Forces two columns
-            gap: 8px;
-            padding: 8px;
-        }
+        grid-template-columns: repeat(2, 1fr); // Two columns on tablets
+        gap: 8px;
+        padding: 8px;
     }
 
     @media (max-width: 600px) {
-        .snippets-grid {
-            grid-template-columns: repeat(2, 1fr); // ✅ Keeps balance, avoids small cramping
-            gap: 6px;
-        }
+        grid-template-columns: repeat(2, 1fr); // Keep two columns on smaller devices
+        gap: 6px;
     }
 
     @media (max-width: 480px) {
-        .snippets-grid {
-            grid-template-columns: repeat(1, 1fr); // ✅ Full-width single column on very small screens
-            gap: 6px;
-            padding: 5px;
-        }
+        grid-template-columns: 1fr; // Single column on mobile
+        gap: 6px;
+        padding: 5px;
     }
 }
-
