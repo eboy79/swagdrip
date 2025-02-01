@@ -63,3 +63,9 @@ header .container {
   background: rgba(0, 0, 0, 0.1);
   margin: $small-spacing auto 0; /* Use small-spacing variable */
 }
+nav ul li:before {
+  color: #000;
+  content: none;
+  font-size: 1rem;
+  margin-right: .5rem;
+}

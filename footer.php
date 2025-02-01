@@ -3,8 +3,8 @@
     <header>
         <div class="button green"></div>
         <div class="button yellow"></div>
-        <div class="button red"></div>
-        <div class="terminal-title">mnrdsgn terminal</div>
+        <div id="close-stats" class="button red"></div>
+        <div class="terminal-title">Sudo://Bash-CLI Command Line Interface</div>
 
     </header>
     <section class="terminal">

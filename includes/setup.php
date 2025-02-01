@@ -63,7 +63,19 @@ function swagdrip_enqueue_assets() {
     }
 
     if (file_exists($js_file)) {
-        wp_enqueue_script('theme-js', get_template_directory_uri() . '/dist/main.min.js', [], filemtime($js_file), true);
+        // Change the handle to match the localization
+        wp_enqueue_script('theme-main-script', get_template_directory_uri() . '/dist/main.min.js', [], filemtime($js_file), true);
+        
+        // Localize with the same handle
+        wp_localize_script(
+            'theme-main-script', // Must match the handle above
+            'mnrInfiniteScroll',
+            array(
+                'restUrl' => esc_url_raw(rest_url('wp/v2/posts')),
+                'nonce' => wp_create_nonce('wp_rest'),
+                'postsPerPage' => (int) get_option('posts_per_page')
+            )
+        );
     }
 }
 add_action('wp_enqueue_scripts', 'swagdrip_enqueue_assets');
@@ -82,3 +94,8 @@ function swagdrip_cleanup() {
     remove_action('wp_print_styles', 'print_emoji_styles');
 }
 add_action('init', 'swagdrip_cleanup');
+
+function new_excerpt_more( $more ) {
+    return '';
+}
+add_filter('excerpt_more', 'new_excerpt_more');

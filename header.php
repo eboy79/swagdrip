@@ -23,8 +23,8 @@
 
 <header>
     <div class="container">
-        <a href="<?php echo home_url(); ?>" class="logo">
-            <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 50 55" width="50" height="55" shape-rendering="geometricPrecision">
+        <a href="<?php echo home_url(); ?>" class="logo" id="img">
+            <svg  xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 50 55" width="50" height="55" shape-rendering="geometricPrecision">
             <path d="M31.1,25.8c-3-7-9.1-12.9-12-22.1c-0.2-0.6-0.8-0.9-1.3-0.7c-0.3,0.1-0.6,0.4-0.7,0.7c-3.9,12.5-13.8,19-13.8,30.3
 	c0,8.1,6.5,14.7,14.7,14.8c2.3,0,4.7-0.5,6.7-1.6c-0.7-1.5-1-3.2-1-4.9c0-5,2.5-8.7,4.8-12.4C29.4,28.6,30.2,27.3,31.1,25.8z
 	 M14.6,43.3c-3.8-1.4-6.4-5.1-6.4-9.2c0.1-2.7,0.8-5.4,2.1-7.8c-0.2,1-0.3,2-0.3,3.1c0,4.3,2.5,8.1,6.3,10c0.7,0.4,1.2,1.1,1.2,1.9
@@ -32,7 +32,7 @@
 	c0.2,0.1,0.4,0.2,0.5,0.5c2.4,7.8,8.3,12.1,9.1,18.7c0.8,6.1-3.8,11.7-9.9,11.6C30.2,52.2,25.8,47.8,25.8,42.3z"/>            </svg>
         </a>
 
-        <nav>
+        <nav id="div">
             <?php
                 wp_nav_menu([
                     'theme_location' => 'primary',

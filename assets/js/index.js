@@ -1,4 +1,9 @@
 import gsap from 'gsap';
-import './main.js';
+import { initializeScripts } from './main.js';
 import './page-load-info.js';
+import initInfiniteScroll from './infinite-scroll';
 
+document.addEventListener('DOMContentLoaded', function() {
+    initializeScripts();
+    initInfiniteScroll();
+});

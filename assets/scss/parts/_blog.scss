@@ -1,48 +1,456 @@
-/* _global.scss */
-@use 'variables' as *;  /* Use the updated way of importing variables */
+@use 'variables' as *; /* Use the updated way of importing variables */
+@use "sass:math" as math;
 
-
+/* ==============================
+   ✅ BLOG FEED CONTAINER
+================================ */
 .blog-feed {
-  margin: $base-spacing auto; /* Use base-spacing for top and bottom margin */
+  margin: 25px auto;
   display: flex;
   flex-direction: column;
 }
 
+/* ==============================
+   ✅ POST STYLES
+================================ */
 .post {
-  padding: $base-spacing;
-  border-radius: $border-radius; /* Use border-radius variable for rounded corners */
+    display: block;
+    position: relative;
+    margin-bottom: 46px;
+    transition: background .3s ease, color .3s ease;
+
+  &:hover {
+    // Apply hover effects from Read More and Date
+    .post-title,
+    .read-more,
+    .post-date {
+      color: #ffffff; /* Matches Read More hover */
+    }
+
+    .date-value {
+      background: #4d4d4d; /* Matches Date hover */
+    }
+
+    .read-more {
+      text-decoration: underline; /* Ensure Read More gets proper styling on hover */
+    }
+
+    .parametric-brick {
+      transform: rotateX(10deg) rotateY(-10deg) !important;
+    }
+
+    .parametric-brick__face::before,
+    .parametric-brick__face::after {
+      transform: scale(0.92) translateZ(0.25rem);
+    }
+
+    .parametric-brick__side--left {
+      transform: rotateY(-90deg) translateZ(-0.125rem) scaleX(1.1);
+    }
+
+    .parametric-brick__side--top {
+      transform: rotateX(-90deg) translateZ(-0.125rem) scaleY(1.1);
+    }
+
+    .parametric-brick__content {
+      transform: translateZ(0.5rem);
+    }
+
+    .parametric-brick__content::after {
+      transform: scaleX(1);
+    }
+
+    .parametric-brick__corners::before,
+    .parametric-brick__corners::after,
+    .parametric-brick__corners-bottom::before,
+    .parametric-brick__corners-bottom::after {
+      transform: translateZ(0.75rem);
+    }
+  }
+
+  .parametric-brick-holdr:hover .parametric-brick {
+    transform: rotateX(10deg) rotateY(-10deg);
+  }
+
+  .parametric-brick__face::before,
+  .parametric-brick__face::after {
+    transform: scale(0.92) translateZ(0.25rem);
+  }
+
+  .parametric-brick__side--left {
+    transform: rotateY(-90deg) translateZ(-0.125rem) scaleX(1.1);
+  }
+
+  .parametric-brick__side--top {
+    transform: rotateX(-90deg) translateZ(-0.125rem) scaleY(1.1);
+  }
+
+  .parametric-brick__content {
+    transform: translateZ(0.5rem);
+  }
+
+  .parametric-brick__content::after {
+    transform: scaleX(1);
+  }
+
+  .parametric-brick__corners::before,
+  .parametric-brick__corners::after,
+  .parametric-brick__corners-bottom::before,
+  .parametric-brick__corners-bottom::after {
+    transform: translateZ(0.75rem);
+  }
+
+  .post-link {
+    display: block;
+    text-decoration: none; // Remove underline
+    color: inherit;
+    height: 100%;
+    width: 100%;
+  }
+
+
 }
 
+/* ==============================
+   ✅ POST TITLE
+================================ */
 .post-title {
-  font-size: $font-size-large; /* Use font-size-large for the post title */
+  font-size: 1.125rem; /* 18px */
   font-weight: bold;
+  margin-bottom: 10px;
+  color: #151515 !important; /* Ensure title remains visible */
+
+  a {
+    text-decoration: none;
+    color: #151515; /* Ensure title remains visible */
+    transition: color 0.3s ease;
+  }
 }
 
-.post-title a {
-  text-decoration: none;
-  color: $text-color; /* Use text-color variable */
-}
-
-.post-description {
+/* ==============================
+   ✅ POST DESCRIPTION / EXCERPT
+================================ */
+.post-description,
+.post-excerpt {
+  margin-bottom: 12px;
+  font-size: 0.875rem; /* 14px */
   color: rgba(0, 0, 0, 0.6);
 }
 
 .post-excerpt {
-  font-size: $font-size-small; /* Use font-size-small for the excerpt */
+  font-size: 0.75rem; /* 12px */
   color: rgba(0, 0, 0, 0.7);
-  margin: $small-spacing 0; /* Use small-spacing for margin */
+  margin: 8px 0;
 }
 
+/* ==============================
+   ✅ READ MORE LINK
+================================ */
 .read-more {
-  font-size: $font-size-medium; /* Use font-size-medium for the read-more link */
-  color: $primary-color;   /* Use primary color for the arrow */
-  text-decoration: none;   /* Remove underline */
-  font-weight: bold;       /* Make the arrow bolder */
+  font-size: 0.875rem; /* 14px */
+  font-weight: bold;
+  color: #0073aa;
+  text-decoration: none;
   padding-left: 4px;
-  line-height: 1;          /* Ensure the arrow is vertically centered */
-  vertical-align: middle;  /* Align vertically with text */
+  line-height: 1;
+  vertical-align: middle;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
 }
 
-.read-more:hover {
-  color: $primary-color-dark; /* Use darker primary color on hover */
+.post:hover .read-more {
+  color: #005680; /* Ensure Read More inherits hover effect */
+  text-decoration: underline;
 }
+
+/* ==============================
+   ✅ POST DATE (INCLUDING HOVER EFFECTS)
+================================ */
+.post-date {
+  opacity: 0.4;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  transition: background 0.3s ease, color 0.3s ease;
+
+  .date-value {
+    background: #b8caca;
+    padding: 0.3rem 0.75rem;
+    position: relative;
+    transition: background 0.3s ease, color 0.3s ease;
+
+    strong {
+      
+      font-weight: normal;
+    }
+
+    [class*="session_"] {
+      opacity: 0.5;
+      font-size: 0.7em;
+      margin-left: 0.5rem;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 50%, rgba(0, 255, 255, 0.03) 50%);
+      background-size: 4px 100%;
+      pointer-events: none;
+    }
+  }
+}
+
+/* ==============================
+   ✅ FLOAT ANIMATION FOR ELEMENTS
+================================ */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+/* ==============================
+   ✅ PARAMETRIC BRICK STYLES
+================================ */
+.parametric-brick-holdr {
+  padding: 4px 0 18px 0;
+  display: block;
+  text-decoration: none;
+}
+
+.parametric-brick {
+  $self: &;
+  position: relative;
+  height: 3rem;
+  width: 8rem;
+  transform: rotateX(20deg) rotateY(-20deg);
+  transform-style: preserve-3d;
+  transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &__face {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+
+  &__side {
+    position: absolute;
+    background: #333;
+    transition: transform 500ms ease;
+  }
+
+  &__content {
+    position: relative;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    font-family: monospace;
+    font-size: 0.675rem;
+    letter-spacing: 0.1em;
+    color: #a3a3a3;
+    transform: translateZ(0.5rem); // Updated to match hover state
+    transition: all 500ms ease;
+  }
+}
+
+
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-2px); }
+  }
+  
+.logo{opacity:0;}
+// Parametric brick styles
+.parametric-brick-holdr {
+    padding-top: 18px;
+    display: block;
+    text-decoration: none;
+}
+.no-underline{text-decoration: none;}
+.parametric-brick {
+    $self: &;
+    position: relative;
+    height: 3rem;
+    width: 8rem;
+    transform: rotateX(20deg) rotateY(-20deg);
+    transform-style: preserve-3d;
+    transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    // Main face with grid
+    &__face {
+      position: absolute;
+      inset: 0;
+      background: #fff;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      
+      // Generate grid rows
+      @for $i from 1 through 8 {
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: math.percentage(math.div($i, 8));
+          width: 100%;
+          height: 1px;
+          background: #404040;
+          opacity: 1 - math.div($i, 10);
+          transition: transform 300ms ease;
+        }
+      }
+      
+      // Generate grid columns
+      @for $i from 1 through 8 {
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: math.percentage(math.div($i, 8));
+          width: 1px;
+          height: 100%;
+          background: #404040;
+          opacity: 1 - math.div($i, 10);
+          transition: transform 300ms ease;
+        }
+      }
+    }
+  
+    // Side faces
+    &__side {
+      position: absolute;
+      background: #333;
+      transition: transform 500ms ease;
+      
+      &--left {
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 0.25rem;
+        transform: rotateY(-90deg) translateZ(-0.125rem);
+        transform-origin: left;
+        background: linear-gradient(to right, #262626, #333);
+      }
+      
+      &--top {
+        top: 0;
+        width: 100%;
+        height: 0.25rem;
+        transform: rotateX(-90deg) translateZ(-0.125rem);
+        transform-origin: top;
+        background: linear-gradient(to bottom, #262626, #333);
+      }
+    }
+  
+    // Text content
+    &__content {
+      position: relative;
+      display: flex;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      font-family: monospace;
+      font-size: 0.675rem;
+      letter-spacing: 0.1em;
+      color: #a3a3a3;
+      transform: translateZ(0.5rem); // Updated to match hover state
+      transition: all 500ms ease;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -0.25rem;
+        left: 0;
+        width: 0%;
+        height: 1px;
+        background: #a3a3a3;
+        transform: scaleX(0);
+        transition: transform 300ms ease;
+      }
+    }
+  
+    // Corner accents
+    @mixin corner($top: 0, $right: 0, $bottom: 0, $left: 0) {
+      content: '';
+      position: absolute;
+      width: 1rem;
+      height: 1rem;
+      border-style: solid;
+      border-width: 1px;
+      border-color: #737373;
+      transform: translateZ(0.375rem);
+      transition: transform 300ms ease;
+      
+      @if $top != 0 { top: $top; }
+      @if $right != 0 { right: $right; }
+      @if $bottom != 0 { bottom: $bottom; }
+      @if $left != 0 { left: $left; }
+    }
+  
+    &__corners {
+      &::before {
+        @include corner($top: 0.5rem, $left: 0.5rem);
+        border-right: none;
+        border-bottom: none;
+      }
+      
+      &::after {
+        @include corner($top: 0.5rem, $right: 0.5rem);
+        border-left: none;
+        border-bottom: none;
+      }
+      
+      &-bottom {
+        &::before {
+          @include corner($bottom: 0.5rem, $left: 0.5rem);
+          border-right: none;
+          border-top: none;
+        }
+        
+        &::after {
+          @include corner($bottom: 0.5rem, $right: 0.5rem);
+          border-left: none;
+          border-top: none;
+        }
+      }
+    }
+  
+    // Hover states for link parent
+    a:hover & {
+      transform: rotateX(10deg) rotateY(-10deg);
+      
+      #{$self}__face {
+        &::before, &::after {
+          transform: scale(0.92) translateZ(0.25rem);
+        }
+      }
+      
+      #{$self}__side {
+        &--left {
+          transform: rotateY(-90deg) translateZ(-0.125rem) scaleX(1.1);
+        }
+        
+        &--top {
+          transform: rotateX(-90deg) translateZ(-0.125rem) scaleY(1.1);
+        }
+      }
+      
+      #{$self}__content {
+        transform: translateZ(0.5rem);
+        
+        &::after {
+          transform: scaleX(1);
+        }
+      }
+      
+      #{$self}__corners, #{$self}__corners-bottom {
+        &::before, &::after {
+          transform: translateZ(0.75rem);
+        }
+      }
+    }
+  }
+

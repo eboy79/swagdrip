@@ -53,6 +53,10 @@ body {
     background: $background-color;  /* Use the background color variable */
     color: $text-color;  /* Use the text color variable */
     font-family: $font-primary;
+    padding-bottom: 8px;  /* Add 8px padding at the bottom */
+    line-height: 1.8;  /* Improve readability */
+    font-size: 1rem;  /* Set a base font size */
+    letter-spacing: 0.02em;  /* Slightly increase letter spacing */
 }
 /* Fix Bullet Point List Styling */
 /* Remove default bullet points */
@@ -105,6 +109,9 @@ section {
   p {
     margin-bottom: $medium-spacing; /* Ensures enough space between paragraphs */
     line-height: 1.8; /* Increases line height for better legibility */
+    font-size: 1rem;  /* Ensure consistent font size */
+    color: $text-color;  /* Use the text color variable */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);  /* Add a subtle text shadow for depth */
   }
 /* Global Image Styles */
 img {
@@ -168,6 +175,10 @@ h1, h2, h3 {
     font-size: 1.5rem;
     margin-bottom: $small-spacing;
     line-height: 1.4;
+    color: $heading-color;  /* Use the heading color variable */
+    text-transform: uppercase;  /* Make headings uppercase */
+    letter-spacing: 0.05em;  /* Increase letter spacing for headings */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Add a subtle text shadow for depth */
 }
 
 h1 {
@@ -234,4 +245,28 @@ ol {
     background-color: #ccc;     /* Pick a softer color or set to transparent if you want them gone */
     margin: 2rem 0;             /* Add some breathing room above/below if you do keep them */
   }
-  
+  #loading-spinner {
+    height: 60px;
+    padding: 20px 0;
+    opacity: 1;
+    text-align: center;
+}
+
+#loading-spinner.hidden {
+    opacity: 0;
+}
+
+.spinner {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
