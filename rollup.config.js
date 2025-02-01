@@ -1,3 +1,5 @@
+// rollup.config.js
+
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import babel from '@rollup/plugin-babel';
@@ -5,75 +7,90 @@ import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
 import postcss from 'rollup-plugin-postcss';
 import autoprefixer from 'autoprefixer';
-import gzipPlugin from 'rollup-plugin-gzip';
-import brotli from 'rollup-plugin-brotli';
+import cssnano from 'cssnano';
+import sass from 'sass';
 
-export default [
-    {
-        input: 'assets/js/index.js',
-        treeshake: true,  // ✅ Helps remove unused code
-        output: {
-            dir: 'dist',  // 🔥 Output files separately instead of a single bundle
-            format: 'es',
-            entryFileNames: '[name]-[hash].js',  // 🔥 Cache-busting filenames
-            chunkFileNames: '[name]-[hash].js',
-            sourcemap: false
-        },
-        context: "window",
-        onwarn(warning, warn) {
-            if (warning.code === 'THIS_IS_UNDEFINED') return;
-            warn(warning);
-        },
-        plugins: [
-            resolve({
-                browser: true,
-                moduleDirectories: ['node_modules']
-            }),
-            commonjs({
-                include: /node_modules/,
-                esmExternals: true,
-                transformMixedEsModules: true
-            }),
-            postcss({
-                plugins: [autoprefixer],
-                extract: 'dist/main.min.css', // ✅ Ensure CSS is extracted
-                minimize: true,
-                sourceMap: true
-            }),
-            babel({
-                babelHelpers: 'bundled',
-                exclude: ['node_modules/three/**', 'node_modules/@vfx-js/core/**']
-            }),
-            replace({
-                'process.env.NODE_ENV': JSON.stringify('production'),
-                preventAssignment: true
-            }),
-            terser({
-                format: {
-                    comments: false
-                },
-                compress: {
-                    drop_console: true,  // ✅ Removes console logs in production
-                    drop_debugger: true,
-                    pure_funcs: ['console.log']  // ✅ Ensures tree-shaking of logs
-                }
-            }),
-            gzipPlugin(),  // ✅ Run compression last for minified files
-            brotli()       // ✅ Same here
-        ]
-    },
-    {
-        input: 'assets/scss/main.scss', // ✅ Make sure this path is correct
-        output: {
-            file: 'dist/main.min.css'
-        },
-        plugins: [
-            postcss({
-                plugins: [autoprefixer],
-                extract: true,  // ✅ Ensure CSS is extracted properly
-                minimize: true,
-                sourceMap: true
-            })
-        ]
+const isProduction = process.env.NODE_ENV === 'production';
+
+const jsConfig = {
+  context: 'window',
+  input: 'assets/js/index.js',
+  output: {
+    file: 'dist/main.min.js',
+    format: 'iife',
+    sourcemap: true,
+  },
+  onwarn: (warning, warn) => {
+    if (warning.message && warning.message.includes("Can't resolve original location")) {
+      return;
     }
-];
+    if (warning.code === 'THIS_IS_UNDEFINED') {
+      return;
+    }
+    warn(warning);
+  },
+  plugins: [
+    // Process any imported CSS (e.g. Prism's CSS)
+    postcss({
+      extensions: ['.css'],
+      include: '**/*.css',
+      plugins: [autoprefixer(), cssnano({ preset: 'default' })],
+      // Set extract to false if you want the CSS to be injected into the head
+      // or set a filename if you want to extract it
+      extract: false,
+      sourceMap: true,
+    }),
+    resolve({
+      browser: true,
+      extensions: ['.js', '.jsx', '.json', '.css'],
+    }),
+    commonjs(),
+    babel({
+      babelHelpers: 'bundled',
+      exclude: 'node_modules/**',
+      compact: true,
+    }),
+    replace({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+      preventAssignment: true,
+    }),
+    isProduction &&
+      terser({
+        format: { comments: false },
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+          pure_funcs: ['console.log'],
+        },
+      }),
+  ],
+};
+
+// Your CSS/SCSS config remains unchanged
+const cssConfig = {
+  input: 'assets/scss/main.scss',
+  output: {
+    file: 'dist/main.min.css.js',
+    format: 'es',
+  },
+  plugins: [
+    postcss({
+      extensions: ['.scss', '.css'],
+      include: ['**/*.scss', '**/*.css'],
+      plugins: [autoprefixer(), cssnano({ preset: 'default' })],
+      extract: 'dist/main.min.css',
+      minimize: true,
+      sourceMap: true,
+      use: [
+        [
+          'sass',
+          {
+            implementation: sass,
+          },
+        ],
+      ],
+    }),
+  ],
+};
+
+export default [jsConfig, cssConfig];

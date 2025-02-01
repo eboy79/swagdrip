@@ -36,16 +36,7 @@
     overflow-x: auto;
   }
   
-  /* Language-specific styling */
-  .language-sql {
-    color: var(--neon-blue);
-    text-shadow: var(--hologram-blur) rgba(0, 243, 255, 0.4);
-  }
-  
-  .language-bash {
-    color: var(--matrix-green);
-    text-shadow: var(--hologram-blur) rgba(0, 255, 157, 0.4);
-  }
+
   
   /* Futuristic Headers */
   .wp-block-heading {

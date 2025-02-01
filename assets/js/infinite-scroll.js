@@ -1,5 +1,5 @@
 // infinite-scroll.js
-export default function initInfiniteScroll() {
+export function  initInfiniteScroll() {
     const container = document.getElementById('infinite-scroll-container');
     const loadingSpinner = document.getElementById('loading-spinner');
     

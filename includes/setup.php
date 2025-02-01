@@ -20,7 +20,7 @@ function swagdrip_setup() {
 
     // Register navigation menus
     register_nav_menus([
-        'primary' => __('Primary Menu', 'swagdrip'),
+        'main-menu' => __( 'Main Menu' , 'swagdrip'),
     ]);
 }
 add_action('after_setup_theme', 'swagdrip_setup');
@@ -55,11 +55,11 @@ add_action('wp_enqueue_scripts', 'swagdrip_enqueue_wc_blocks', 20);
  * Theme Assets
  */
 function swagdrip_enqueue_assets() {
-    $css_file = get_template_directory() . '/dist/main.min.css';
+    $css_file = get_template_directory() . '/dist/dist/main.min.css';
     $js_file = get_template_directory() . '/dist/main.min.js';
 
     if (file_exists($css_file)) {
-        wp_enqueue_style('theme-style', get_template_directory_uri() . '/dist/main.min.css', [], filemtime($css_file));
+        wp_enqueue_style('theme-style', get_template_directory_uri() . '/dist/dist/main.min.css', [], filemtime($css_file));
     }
 
     if (file_exists($js_file)) {

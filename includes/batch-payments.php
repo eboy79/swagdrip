@@ -1,223 +1,250 @@
 <?php
-// includes/batch-payments.php
+// File: wp-content/themes/your-theme/includes/batch-payments.php
 
-// Direct logging function to help debug
-function direct_debug_log($message) {
-    if (is_array($message)) {
-        $message = print_r($message, true);
-    }
-    $log_file = WP_CONTENT_DIR . '/batch-debug.log';
-    file_put_contents($log_file, date('[Y-m-d H:i:s] ') . $message . "\n", FILE_APPEND);
-}
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
 
-// Log when the payment method is selected
-function log_payment_method($gateways) {
-    if (is_array($gateways)) {
-        direct_debug_log('Available payment gateways: ' . implode(', ', array_keys($gateways)));
-    }
-    return $gateways;
-}
-add_filter('woocommerce_available_payment_gateways', 'log_payment_method', 1);
+    class BatchPaymentProcessorTest {
+        public $test_products = [];
+        public $test_orders   = [];
 
-// Register our custom order status
-function register_batch_pending_order_status() {
-    register_post_status('wc-batch-pending', array(
-        'label'                     => 'Batch Pending',
-        'public'                    => true,
-        'show_in_admin_status_list' => true,
-        'show_in_admin_all_list'    => true,
-        'exclude_from_search'       => false,
-        'label_count'               => _n_noop('Batch Pending <span class="count">(%s)</span>',
-            'Batch Pending <span class="count">(%s)</span>')
-    ));
-}
-add_action('init', 'register_batch_pending_order_status');
-
-// Intercept the payment early
-function intercept_early_payment($order_id) {
-    direct_debug_log('Processing order #' . $order_id);
-    $order = wc_get_order($order_id);
-    
-    if (!$order) {
-        direct_debug_log('No order found for ID: ' . $order_id);
-        return;
-    }
-    
-    direct_debug_log('Payment method: ' . $order->get_payment_method());
-    
-    if ($order->get_payment_method() === 'stripe') {
-        direct_debug_log('Setting order to batch-pending');
-        $order->update_status('batch-pending', 'Order queued for batch processing');
-        WC()->cart->empty_cart();
-        
-        wc_add_notice(__('Your order has been received and will be processed in our next payment batch.', 'your-theme'), 'success');
-        
-        direct_debug_log('Order status updated to batch-pending');
-        
-        // Prevent further processing
-        remove_all_actions('woocommerce_payment_complete');
-        remove_all_actions('woocommerce_order_status_processing');
-    }
-}
-add_action('woocommerce_new_order', 'intercept_early_payment', 1);
-
-// Add our status to order statuses list
-function add_batch_pending_to_order_statuses($order_statuses) {
-    direct_debug_log('Adding batch-pending to statuses');
-    $new_statuses = array();
-    foreach ($order_statuses as $key => $status) {
-        $new_statuses[$key] = $status;
-        if ($key === 'wc-pending') {
-            $new_statuses['wc-batch-pending'] = 'Batch Pending';
+        public function __construct() {
+            if ( ! method_exists( $this, 'create_test_products' ) ) {
+                WP_CLI::error( 'create_test_products method not defined' );
+            }
         }
-    }
-    return $new_statuses;
-}
-add_filter('wc_order_statuses', 'add_batch_pending_to_order_statuses');
 
-// Block processing for batch-pending orders
-function prevent_processing($gateways) {
-    if (!is_array($gateways)) {
-        return $gateways;
-    }
-    
-    if (isset(WC()->session)) {
-        $order_id = WC()->session->get('order_awaiting_payment');
-        if ($order_id) {
-            $order = wc_get_order($order_id);
-            if ($order && $order->get_status() === 'batch-pending') {
-                direct_debug_log('Blocking payment for batch-pending order #' . $order_id);
-                return array();
+        public function run_test() {
+            WP_CLI::log( '=== Starting Batch Payment Processor Test ===' );
+
+            try {
+                $this->cleanup_existing_test_data();
+                $this->create_test_products();
+                $this->create_batch_pending_orders();
+                $this->simulate_batch_payment_processing();
+                $this->cleanup_test_data();
+            } catch ( Exception $e ) {
+                WP_CLI::error( 'Test failed: ' . $e->getMessage() );
+                $this->cleanup_test_data();
+            }
+
+            WP_CLI::success( '=== Batch Payment Processor Test Completed ===' );
+        }
+
+        public function create_test_products() {
+            WP_CLI::log( 'Creating test products...' );
+
+            $product_names = [
+                'Batch Test Product 1',
+                'Batch Test Product 2',
+                'Batch Test Product 3'
+            ];
+
+            foreach ( $product_names as $name ) {
+                try {
+                    $product = new WC_Product_Simple();
+                    $product->set_name( $name );
+                    $product->set_regular_price( rand( 10, 100 ) );
+                    $product_id = $product->save();
+
+                    if ( ! $product_id ) {
+                        throw new Exception( "Failed to create product: $name" );
+                    }
+
+                    $this->test_products[] = $product_id;
+                    WP_CLI::log( "Created product: $name (ID: $product_id)" );
+                } catch ( Exception $e ) {
+                    WP_CLI::warning( "Error creating product $name: " . $e->getMessage() );
+                }
+            }
+        }
+
+        public function create_batch_pending_orders() {
+            WP_CLI::log( 'Creating batch pending orders...' );
+
+            if ( empty( $this->test_products ) ) {
+                throw new Exception( 'No test products available' );
+            }
+
+            // Register custom order status if not already registered.
+            if ( ! in_array( 'wc-batch-pending', array_keys( wc_get_order_statuses() ) ) ) {
+                register_post_status( 'wc-batch-pending', [
+                    'label'                     => 'Batch Pending',
+                    'public'                    => true,
+                    'show_in_admin_all_list'    => true,
+                    'show_in_admin_status_list' => true,
+                    'label_count'               => _n_noop( 'Batch Pending (%s)', 'Batch Pending (%s)' )
+                ] );
+            }
+
+            // Create test orders.
+            for ( $i = 0; $i < 3; $i++ ) {
+                try {
+                    $order = wc_create_order();
+
+                    // Add a random product.
+                    $product_id = $this->test_products[ array_rand( $this->test_products ) ];
+                    $product    = wc_get_product( $product_id );
+                    $order->add_product( $product, 1 );
+
+                    // Set billing details.
+                    $billing_address = [
+                        'first_name' => 'Batch Test',
+                        'last_name'  => 'Customer ' . ( $i + 1 ),
+                        'email'      => "batchtest{$i}@example.com",
+                        'phone'      => '123-456-7890',
+                        'address_1'  => '123 Test St',
+                        'address_2'  => 'Apt 4B',
+                        'city'       => 'Test City',
+                        'state'      => 'CA',
+                        'postcode'   => '90210',
+                        'country'    => 'US'
+                    ];
+
+                    foreach ( $billing_address as $key => $value ) {
+                        $order->{ "set_billing_$key" }( $value );
+                    }
+
+                    // Set shipping details (only valid fields).
+                    $shipping_fields = [ 'first_name', 'last_name', 'address_1', 'address_2', 'city', 'state', 'postcode', 'country' ];
+                    foreach ( $shipping_fields as $key ) {
+                        if ( isset( $billing_address[ $key ] ) ) {
+                            $order->{ "set_shipping_$key" }( $billing_address[ $key ] );
+                        }
+                    }
+
+                    // Set payment method.
+                    $order->set_payment_method( 'stripe' );
+                    $order->set_payment_method_title( 'Credit Card (Stripe)' );
+
+                    // Save customer data using the CRUD method.
+                    $order->update_meta_data( '_stripe_customer_info', [
+                        'name'    => $billing_address['first_name'] . ' ' . $billing_address['last_name'],
+                        'email'   => $billing_address['email'],
+                        'address' => [
+                            'line1'       => $billing_address['address_1'],
+                            'line2'       => $billing_address['address_2'],
+                            'city'        => $billing_address['city'],
+                            'state'       => $billing_address['state'],
+                            'postal_code' => $billing_address['postcode'],
+                            'country'     => $billing_address['country']
+                        ]
+                    ] );
+                    $order->save();
+
+                    // Optional: debug saved meta.
+                    $stripe_info = $order->get_meta( '_stripe_customer_info' );
+                    error_log( print_r( $stripe_info, true ) );
+
+                    $order->calculate_totals();
+                    $order->save();
+                    $order->update_status( 'batch-pending' );
+
+                    $this->test_orders[] = $order->get_id();
+                    WP_CLI::log( "Created batch pending order #{$order->get_id()}" );
+                } catch ( Exception $e ) {
+                    WP_CLI::warning( "Error creating order: " . $e->getMessage() );
+                }
+            }
+        }
+
+        public function simulate_batch_payment_processing() {
+            WP_CLI::log( 'Simulating batch payment processing...' );
+
+            $orders = array_filter( array_map( 'wc_get_order', $this->test_orders ) );
+            WP_CLI::log( 'Processing ' . count( $orders ) . ' test orders' );
+
+            foreach ( $orders as $order ) {
+                try {
+                    WP_CLI::log( "Processing order #{$order->get_id()}" );
+
+                    // Retrieve the Stripe gateway.
+                    $available_gateways = WC()->payment_gateways->payment_gateways();
+                    if ( ! isset( $available_gateways['stripe'] ) ) {
+                        throw new Exception( 'Stripe gateway not available' );
+                    }
+
+                    $gateway = $available_gateways['stripe'];
+
+                    // Set test payment data.
+                    $_POST['stripe_token'] = 'tok_visa';
+                    $_POST['payment_method'] = 'stripe';
+                    $_POST['wc-stripe-payment-token'] = 'new';
+
+                    $order->update_meta_data( '_stripe_source_id', 'tok_visa' );
+                    $order->update_meta_data( '_stripe_intent_id', 'pi_' . uniqid() );
+                    $order->update_meta_data( '_stripe_customer_id', 'cus_' . uniqid() );
+                    $order->save();
+
+                    $result = $gateway->process_payment( $order->get_id() );
+
+                    if ( $result['result'] === 'success' ) {
+                        $order->payment_complete();
+                        $order->add_order_note( 'Test payment processed successfully' );
+                        WP_CLI::success( "Payment successful for order #{$order->get_id()}" );
+                    } else {
+                        throw new Exception( isset( $result['messages'] ) ? $result['messages'] : 'Unknown error' );
+                    }
+                } catch ( Exception $e ) {
+                    WP_CLI::warning( "Payment failed for order #{$order->get_id()}: " . $e->getMessage() );
+                    $order->update_status( 'failed' );
+                    $order->add_order_note( 'Test payment failed: ' . $e->getMessage() );
+                }
+            }
+        }
+
+        public function cleanup_test_data() {
+            WP_CLI::log( 'Cleaning up test data...' );
+
+            // Delete test products.
+            foreach ( $this->test_products as $product_id ) {
+                wp_delete_post( $product_id, true );
+                WP_CLI::log( "Deleted product #{$product_id}" );
+            }
+
+            // Delete test orders.
+            foreach ( $this->test_orders as $order_id ) {
+                $order = wc_get_order( $order_id );
+                if ( $order ) {
+                    $order->delete( true );
+                    WP_CLI::log( "Deleted order #{$order_id}" );
+                }
+            }
+        }
+
+        public function cleanup_existing_test_data() {
+            WP_CLI::log( 'Cleaning up existing test data...' );
+
+            // Clean up products matching our test product name.
+            $existing_products = get_posts( [
+                'post_type'      => 'product',
+                'posts_per_page' => -1,
+                'post_status'    => 'any',
+                's'              => 'Batch Test Product'
+            ] );
+
+            foreach ( $existing_products as $product ) {
+                wp_delete_post( $product->ID, true );
+            }
+
+            // Clean up orders via WC_Order_Query.
+            $order_query = new WC_Order_Query( [
+                'limit'        => -1,
+                'status'       => array_keys( wc_get_order_statuses() ),
+                'meta_key'     => '_billing_email',
+                'meta_value'   => '@example.com',
+                'meta_compare' => 'LIKE'
+            ] );
+            $existing_orders = $order_query->get_orders();
+
+            foreach ( $existing_orders as $order ) {
+                $order->delete( true );
             }
         }
     }
-    return $gateways;
+
+    // Register the WP-CLI command.
+    WP_CLI::add_command( 'batch-payment-processor', function( $args, $assoc_args ) {
+        $processor = new BatchPaymentProcessorTest();
+        $processor->run_test();
+    } );
 }
-add_filter('woocommerce_available_payment_gateways', 'prevent_processing', 999);
-
-// Intercept Stripe intent creation
-add_filter('wc_stripe_payment_intent_params', function($params, $order) {
-    if ($order->get_status() === 'batch-pending') {
-        direct_debug_log('Preventing Stripe intent for batch-pending order #' . $order->get_id());
-        throw new Exception('Order queued for batch processing');
-    }
-    return $params;
-}, 10, 2);
-
-// Schedule weekly processing
-function schedule_batch_processing() {
-    if (!wp_next_scheduled('process_batch_payments')) {
-        wp_schedule_event(strtotime('next Monday'), 'weekly', 'process_batch_payments');
-    }
-}
-add_action('init', 'schedule_batch_processing');
-
-// Process batch payments
-function process_batch_payments() {
-    direct_debug_log('Starting batch payment processing');
-    
-    $orders = wc_get_orders(array(
-        'status' => 'batch-pending',
-        'limit'  => -1,
-    ));
-    
-    if (empty($orders)) {
-        direct_debug_log('No batch-pending orders found');
-        return;
-    }
-    
-    foreach ($orders as $order) {
-        try {
-            if (!class_exists('WC_Gateway_Stripe')) {
-                direct_debug_log('Stripe gateway class not found');
-                continue;
-            }
-            
-            $gateway = new WC_Gateway_Stripe();
-            $result = $gateway->process_payment($order->get_id());
-            
-            if ($result['result'] === 'success') {
-                $order->add_order_note('Batch payment processed successfully.');
-                direct_debug_log('Successfully processed payment for order #' . $order->get_id());
-            } else {
-                throw new Exception('Payment processing failed');
-            }
-        } catch (Exception $e) {
-            $error_message = 'Batch payment error: ' . $e->getMessage();
-            $order->add_order_note($error_message);
-            direct_debug_log($error_message . ' for order #' . $order->get_id());
-        }
-    }
-}
-add_action('process_batch_payments', 'process_batch_payments');
-
-
-// Add a settings section in WooCommerce settings
-function add_batch_payment_settings($settings) {
-    $settings[] = array(
-        'title' => __('Batch Payment Settings', 'your-textdomain'),
-        'type'  => 'title',
-        'id'    => 'batch_payment_options',
-    );
-
-    $settings[] = array(
-        'title'    => __('Batch Frequency', 'your-textdomain'),
-        'desc'     => __('Select how often batch payments should be processed.', 'your-textdomain'),
-        'id'       => 'batch_payment_frequency',
-        'type'     => 'select',
-        'options'  => array(
-            'weekly'    => __('Weekly', 'your-textdomain'),
-            'biweekly'  => __('Bi-Weekly', 'your-textdomain'),
-            'monthly'   => __('Monthly', 'your-textdomain'),
-        ),
-        'default'  => 'weekly',
-        'desc_tip' => true,
-    );
-
-    $settings[] = array(
-        'type' => 'sectionend',
-        'id'   => 'batch_payment_options',
-    );
-
-    return $settings;
-}
-add_filter('woocommerce_get_settings_general', 'add_batch_payment_settings');
-// Reschedule batch payments based on selected frequency
-function reschedule_batch_processing() {
-    // Get the selected frequency
-    $frequency = get_option('batch_payment_frequency', 'weekly');
-
-    // Clear any existing schedules
-    wp_clear_scheduled_hook('process_batch_payments');
-
-    // Determine schedule time
-    $start_time = strtotime('next Monday'); // Default: Weekly
-    $interval = 'weekly';
-
-    if ($frequency === 'biweekly') {
-        $start_time = strtotime('next Monday +1 week');
-        $interval = 'biweekly';
-    } elseif ($frequency === 'monthly') {
-        $start_time = strtotime('first day of next month');
-        $interval = 'monthly';
-    }
-
-    // Schedule event
-    if (!wp_next_scheduled('process_batch_payments')) {
-        wp_schedule_event($start_time, $interval, 'process_batch_payments');
-    }
-}
-add_action('admin_init', 'reschedule_batch_processing');
-
-function custom_cron_schedules($schedules) {
-    $schedules['biweekly'] = array(
-        'interval' => 1209600, // 2 weeks
-        'display'  => __('Every Two Weeks', 'your-textdomain'),
-    );
-    $schedules['monthly'] = array(
-        'interval' => 2592000, // 30 days
-        'display'  => __('Monthly', 'your-textdomain'),
-    );
-    return $schedules;
-}
-add_filter('cron_schedules', 'custom_cron_schedules');

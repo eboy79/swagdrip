@@ -27,7 +27,23 @@ html, body {
     margin: 0;
     padding: 0;
 }
-
+@font-face {
+    font-family: 'Inter';
+    font-weight: 700;
+    src: url('../assets/fonts/Inter-Bold.woff2') format('woff2');
+    font-display: swap;
+  }
+  
+  html, :host {
+    line-height: 1.5;
+    text-size-adjust: 100%;
+    tab-size: 4;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-feature-settings: normal;
+    font-variation-settings: normal;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
 /* Apply font-family only to your site, not admin icons */
 body, input, button, textarea {
     font-family: $font-primary;
@@ -270,3 +286,5 @@ ol {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+.hidden{display:none !important;}
+.row{width:100%;}

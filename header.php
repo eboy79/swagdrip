@@ -20,8 +20,8 @@
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
-
-<header>
+<div class="site" id="page">
+<header id="wrapper-navbar" data-barba="wrapper">
     <div class="container">
         <a href="<?php echo home_url(); ?>" class="logo" id="img">
             <svg  xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 50 55" width="50" height="55" shape-rendering="geometricPrecision">
@@ -32,17 +32,18 @@
 	c0.2,0.1,0.4,0.2,0.5,0.5c2.4,7.8,8.3,12.1,9.1,18.7c0.8,6.1-3.8,11.7-9.9,11.6C30.2,52.2,25.8,47.8,25.8,42.3z"/>            </svg>
         </a>
 
-        <nav id="div">
-            <?php
-                wp_nav_menu([
-                    'theme_location' => 'primary',
-                    'container'      => false,
-                    'menu_class'     => 'nav-menu'
-                ]);
-            ?>
-        </nav>
-    </div>
-</header>
 
+        <!-- Navigation Menu -->
+        <nav class="nav-menu" id="nav-menu">
+        <button class="navbar-toggler hidden" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+        <?php get_template_part( 'topmenu' ); ?>
+        </nav>
+
+
+</header>
+</div>
 
 <div class="header-underline"></div>

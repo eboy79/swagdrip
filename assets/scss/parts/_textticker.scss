@@ -1,0 +1,117 @@
+///text block slider 
+.ticker-row {
+    display: flex;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    visibility: hidden; /* Initially hide the ticker rows */
+    height: 0; /* Initially set height to 0 to avoid flash */
+  }
+  
+  .ticker-container {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    position: absolute; /* Use absolute positioning for smooth animation */
+    left: 0; /* Align the container to the left edge of the row */
+  }
+  
+  .ticker-row img {
+    display: inline-block; /* Ensure the images are inline-block elements */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 100%; /* Ensure the images fit the container height */
+  }
+  
+  .hidden {
+    visibility: hidden; /* Hide elements with the hidden class */
+  }
+  
+  .loaded {
+    visibility: visible; /* Show elements once they are loaded */
+  }
+  .content-wrapper {
+    min-height: 100vh; /* Ensure the content wrapper takes at least the full viewport height */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 1rem; /* Adjust as needed */
+    text-align: center;
+  }
+  ///text block slider end
+  #svg-container {
+    display: flex;
+    justify-content: flex-start;
+    overflow: hidden;
+    height: 170px;
+    position: relative;
+    width: 100%;
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  
+  .wide-container {
+    display: flex;
+    flex-direction: row;
+    width: 200%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    height: 100%;
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  
+  .word-svg {
+    transform-origin: top left;
+    opacity: 1;
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  .ticker-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    overflow:hidden;
+    will-change: transform
+  }
+  
+  .ticker-row {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    will-change: transform
+  }
+  
+  .svg-letter {
+    display: inline-block;
+    width: auto;
+    height: 100%;
+    will-change: transform
+  }
+  
+  .svg-letter svg {
+    height: 100%;
+    display: block;
+    will-change: transform
+  }
+  #viewer {
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #fff; /* Adjust background color as needed */
+  }
