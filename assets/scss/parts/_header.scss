@@ -5,10 +5,13 @@
 /* Header */
 header {
   width: 100%;
-  padding: $base-spacing 0; /* Use base-spacing variable for padding */
+  padding:0px 0; /* Use base-spacing variable for padding */
   display: flex;
   justify-content: center;
   align-items: center;
+  @media (min-width: $screen-sm) {
+    padding: $base-spacing 0; /* Use base-spacing variable for padding */
+  }
 }
 
 /* Keep content aligned */
@@ -18,7 +21,7 @@ header .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 $base-spacing; /* Use base-spacing variable */
+  padding: 0 0 0 $base-spacing; /* Use base-spacing variable */
   margin: 0 auto;
 }
 
@@ -28,7 +31,20 @@ header .container {
   display: block;
   width: 50px; /* Ensure it doesn’t exceed its container */
 }
-
+.logo {
+  margin-top:0px;
+  z-index: 9999999;
+  @media (min-width: $screen-sm) {
+    margin-top: 0px;
+  }
+}
+.logo2 {
+  margin-top:0px;
+  z-index: 9999999;
+  @media (min-width: $screen-sm) {
+    margin-top: 0px;
+  }
+}
 /* Optional: additional SVG-specific rendering optimizations */
 .logo svg {
   width: 50px;
@@ -37,35 +53,4 @@ header .container {
   shape-rendering: geometricPrecision;
   text-rendering: optimizeLegibility;
   image-rendering: -webkit-optimize-contrast;
-}
-
-/* Nav */
-.nav-menu {
-  display: flex;
-  gap: $base-spacing; /* Use base-spacing variable for gap */
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.nav-menu li a {
-  text-decoration: none;
-  color: $text-color; /* Use text-color variable */
-  font-weight: 500;
-  font-family: $font-primary; /* Use font-primary variable */
-}
-
-/* Header Underline */
-.header-underline {
-  width: 100%;
-  max-width: 1200px;
-  height: 1px;
-  background: rgba(0, 0, 0, 0.1);
-  margin: $small-spacing auto 0; /* Use small-spacing variable */
-}
-nav ul li:before {
-  color: #000;
-  content: none;
-  font-size: 1rem;
-  margin-right: .5rem;
 }

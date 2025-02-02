@@ -23,7 +23,7 @@ $font-size-medium: 14px;
 $font-size-large: 18px;
 
 /* Breakpoints */
-$mobile: 600px;
+$mobile: 768px;
 $tablet: 768px;
 $desktop: 1024px;
 
@@ -32,3 +32,8 @@ $border-radius: 8px;
 
 /* Post Background Color */
 $post-bg-color: #f9f9f9;
+
+$screen-sm: 668px;
+$screen-md: 768px;
+$screen-lg: 1024px;
+$screen-xl: 1280px;

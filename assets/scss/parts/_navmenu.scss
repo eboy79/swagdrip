@@ -1,3 +1,4 @@
+@use 'variables' as *;
 #header {
     position: relative;
     width: 100%;
@@ -11,7 +12,7 @@
     width: 100%;
     height: 100%;
     background-color: #000;
-    z-index: 10000;
+    z-index: 300;
     overflow: hidden;
     visibility: hidden; /* Initially hidden */
     clip-path: inset(100% 0 0 0);
@@ -20,10 +21,10 @@
 .menu-content {
     color: #fff;
     text-align: center;
-    padding-top: 100px;
+    padding-top: 20px;
     opacity: 0;
     @media screen and ( max-width: 782px ) {
-        padding-top: 60px;
+        padding-top:0px;
 }
 }
 
@@ -66,11 +67,6 @@
     font-size: 1rem;
 }
 
-.logo {
-    margin-top: 20px;
-}
-
-
 
 
 .menu-container {
@@ -105,7 +101,8 @@
 }
 .navburger-circle-wrap{
     position: absolute;
-    right: 10px;
+    right: 12px;
+    top: 12px;
 }
 .navburger-circle {
     width: 60px;
@@ -155,3 +152,48 @@
     transform: rotate(-45deg) translateY(0) translateZ(0);
 }
 ul.primary-menu{list-style: none;}
+
+
+
+.nav-section {
+    height: 35vh;
+    position: relative;
+    display: grid;
+    align-content: center;
+  }
+ .bottomleftinfo{
+    color: #fff;
+    text-align: left;
+    padding-bottom: 21px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.bottomleftinfo .contact-info p {color:#fff;}
+.contact-info p {
+    margin: 0;
+    font-size: 1rem;
+    color:#fff;
+    font-weight: 600;
+  }
+.sideicons {
+    position: absolute;
+    right: 13px;
+    top: -27%;
+}
+.relativerow{
+
+}
+.navinfocontainer {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 100%;
+    padding: 0 0 0 25px;
+    width: 100%;
+}
+#img2{fill:#fff;padding: 15px 0;z-index:9999999999;
+
+    @media (min-width: $screen-sm) {
+padding: 20px 0;
+      }}

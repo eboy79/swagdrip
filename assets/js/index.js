@@ -1,6 +1,8 @@
+ // index.js
 import gsap from 'gsap';
 import './main.js';
 import { initWordStack, animateWordsUp, animateWordsDown, playTimeline, pauseTimeline } from './animations/wordstack';
+import { ForwardShaderAnimation } from './animations/ShaderAnimation';
 
 document.addEventListener('DOMContentLoaded', function () {
     var menuOverlay = document.getElementById('menu-overlay');
@@ -14,6 +16,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const lines = document.querySelectorAll('.TheNavigationBurger-line');
     const menuText = document.querySelector('.menu-text');
     const wideContainer = document.getElementById('wide-container');
+    const img2Element = document.getElementById('img2');  // Ensure img2 exists in your HTML
+    const img2Anim = new ForwardShaderAnimation(img2Element);  // Initialize the animation
+    const logoElement = document.getElementById('img');
+
+    const shaderAnim = new ForwardShaderAnimation(logoElement);
+
+
     gsap.set(lines, { opacity: 0 }); // Set initial state for submenu items
 
     let wordStackInitialized = false;
@@ -60,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function closeMenu() {
         gsap.set(menuOverlay, { transformOrigin: 'top center' });
-
+ 
         // Create a timeline for the closing animation
         const closeTimeline = gsap.timeline({
             onComplete: function() {
@@ -117,17 +126,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 ease: 'power1.inOut',
                 onUpdate: () => {
                     const transformValue = gsap.getProperty(menuText, 'x');
-                    console.log('Updating transform', transformValue);
-                },
-                onComplete: () => console.log('Transform complete')
+                }
             });
         }
     });
 
     menuContainer.addEventListener('mouseleave', () => {
-        console.log('Mouse left menu container');
         if (!menuContainer.classList.contains('open')) {
-            console.log('Menu container is not open, reverting transformations');
 
             gsap.to(navburgerCircle, {
                 clipPath: 'circle(10%)',
@@ -145,9 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 ease: 'power1.inOut',
                 onUpdate: () => {
                     const transformValue = gsap.getProperty(menuText, 'x');
-                    console.log('Updating transform', transformValue);
-                },
-                onComplete: () => console.log('Transform complete')
+                }
             });
         }
     });
@@ -155,7 +158,8 @@ document.addEventListener('DOMContentLoaded', function () {
     menuContainer.addEventListener('click', () => {
         menuContainer.classList.toggle('open');
         if (menuContainer.classList.contains('open')) {
-            openMenu();
+            // Open the menu animations
+            openMenu();  // (Assume openMenu() is defined elsewhere)
             gsap.to(clipBox, {
                 clipPath: 'inset(0 0 0 calc(100% - 50px) round 25px)',
                 duration: 0.3,
@@ -167,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 ease: 'power1.inOut'
             });
             gsap.to(navburgerCircle, {
-                scale: 1, /* Scale the circle 10% larger on click */
+                scale: 1,
                 duration: 0.3,
                 ease: 'power1.inOut'
             });
@@ -187,8 +191,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 duration: 0.3,
                 ease: 'power1.inOut'
             });
+            img2Anim.play(); 
+            gsap.to(logoElement, {
+                opacity: 0,
+                duration: 0.1,
+                delay: 0.6,
+                ease: 'power1.inOut'
+            });
+            // For repeated animation, you might want to restart the timeline:
         } else {
-            closeMenu();
+            // Close the menu animations
+            closeMenu();  // (Assume closeMenu() is defined elsewhere)
             gsap.to(clipBox, {
                 clipPath: 'inset(0 0 0 0 round 25px)',
                 duration: 0.5,
@@ -209,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 duration: 0.5,
                 ease: 'power1.inOut',
                 onComplete: () => {
-                    gsap.set(lines, { opacity: 0 }); // Ensure opacity is reset
+                    gsap.set(lines, { opacity: 0 });
                 }
             });
             gsap.to(lines[0], {
@@ -226,6 +239,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 duration: 0.5,
                 ease: 'power1.inOut'
             });
+            gsap.to(logoElement, {
+                opacity: 1,
+                duration: 0.1,
+                delay: 0.6,
+                ease: 'power1.inOut'
+            });
         }
+      });
+    
     });
-});

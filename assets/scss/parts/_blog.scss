@@ -13,6 +13,7 @@
 /* ==============================
    ✅ POST STYLES
 ================================ */
+.session-info{float:right;margin{right:10px;}}
 .post {
     display: block;
     position: relative;
@@ -133,8 +134,17 @@
 .post-description,
 .post-excerpt {
   margin-bottom: 12px;
-  font-size: 0.875rem; /* 14px */
-  color: rgba(0, 0, 0, 0.6);
+  font-size: 16px; /* 14px */
+  color: #4d4646;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  @media (min-width: $screen-sm) {
+    margin-bottom: 12px;
+  font-size: 18px; /* 14px */
+  color: #4d4646;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  }
 }
 
 .post-excerpt {
@@ -176,7 +186,7 @@
   transition: background 0.3s ease, color 0.3s ease;
 
   .date-value {
-    background: #b8caca;
+    background: #758a8a;
     padding: 0.3rem 0.75rem;
     position: relative;
     transition: background 0.3s ease, color 0.3s ease;
@@ -193,7 +203,7 @@
     }
 
     &::before {
-      content: '';
+   
       position: absolute;
       inset: 0;
       background: linear-gradient(90deg, transparent 50%, rgba(0, 255, 255, 0.03) 50%);

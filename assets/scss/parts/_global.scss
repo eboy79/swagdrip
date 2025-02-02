@@ -29,6 +29,20 @@ html, body {
 }
 @font-face {
     font-family: 'Inter';
+    font-weight: 400;
+    src: url('../assets/fonts/Inter-Regular.woff2') format('woff2');
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Inter';
+    font-weight: 500;
+    src: url('../assets/fonts/Inter-SemiBold.woff2') format('woff2');
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Inter';
     font-weight: 700;
     src: url('../assets/fonts/Inter-Bold.woff2') format('woff2');
     font-display: swap;
@@ -83,7 +97,6 @@ ul {
 }
 
 ul li::before {
-    content: "➤"; /* Custom bullet */
     color: #000; /* Adjust to fit your theme */
     font-size: 1rem;
     margin-right: 0.5rem;
@@ -270,6 +283,7 @@ ol {
 
 #loading-spinner.hidden {
     opacity: 0;
+    
 }
 
 .spinner {
@@ -286,5 +300,45 @@ ol {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-.hidden{display:none !important;}
+
 .row{width:100%;}
+.fixed-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0; /* Optional: Span full width */
+    z-index: 1000; /* Ensure it stays above other content */
+
+    padding: 1rem;
+    border-top: 0px solid #ddd;
+  }
+
+  /* Hide on all screens */
+.hide , .hidden{ display: none !important; }
+
+/* Show on all screens */
+.show { display: block !important; }
+
+/* Hide on small screens (less than 640px) */
+.hide-sm { display: none !important; }
+@media (min-width: 640px) {
+  .hide-sm { display: block !important; }
+}
+
+/* Hide on medium screens (641px to 1024px) */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .hide-md { display: none !important; }
+}
+@media (max-width: 640px), (min-width: 1025px) {
+  .hide-md { display: block !important; }
+}
+
+/* Hide on large screens (more than 1024px) */
+@media (min-width: 1025px) {
+  .hide-lg { display: none !important; }
+}
+@media (max-width: 1024px) {
+  .hide-lg { display: block !important; }
+}
+.halfscreen{width:50%;float:left;}
+.margin-medium{margin:8px;}

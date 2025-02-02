@@ -7,7 +7,10 @@
   width: 100%;
   max-width: 800px;
   margin: 0 auto; /* Center the content */
-  padding-bottom: $small-spacing; /* Padding at the bottom of the content */
+  padding-bottom: 0; /* Padding at the bottom of the content */
+  @media (min-width: $screen-sm) {
+    padding-bottom: $small-spacing; /* Padding at the bottom of the content */
+  }
 }
 
 /* Single Post Layout */
@@ -18,10 +21,16 @@
 
 /* Post Title Styling */
 .post-title {
-  font-size: 2rem; /* Larger title */
+  font-size: 1.6rem; /* Larger title */
   font-weight: 700; /* Bold for emphasis */
   margin-bottom: $medium-spacing; /* Space below title */
-  line-height: 1.4; /* Improve line height for readability */
+  line-height: 1.2; /* Improve line height for readability */
+  @media (min-width: $screen-sm) {
+    font-size: 2rem; /* Larger title */
+    font-weight: 700; /* Bold for emphasis */
+    margin-bottom: $medium-spacing; /* Space below title */
+    line-height: 1.4; /* Improve line height for readability */
+  }
 }
 
 /* Post Content Styling */
