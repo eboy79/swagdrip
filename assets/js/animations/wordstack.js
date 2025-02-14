@@ -9,19 +9,24 @@ function applyKerning(groups, kerningPairs, baseSpacing) {
     groups.forEach((g, index) => {
         const letter = g.getAttribute("data-letter");
         const width = parseInt(g.getAttribute("data-width"));
+
         g.setAttribute("transform", `translate(${currentX}, 800) scale(1, -1)`);
         currentX += width;
+
         if (index < groups.length - 1) {
             const nextLetter = groups[index + 1].getAttribute("data-letter");
-            const pair = letter + nextLetter;
-            let adjustment = baseSpacing * letterSpacingMultiplier;
-            if (kerningPairs[pair]) {
-                adjustment += kerningPairs[pair];
+            if (letter !== ' ' && nextLetter !== ' ') {  // Skip kerning adjustments for spaces
+                const pair = letter + nextLetter;
+                let adjustment = baseSpacing * letterSpacingMultiplier;
+                if (kerningPairs[pair]) {
+                    adjustment += kerningPairs[pair];
+                }
+                currentX += adjustment;
             }
-            currentX += adjustment;
         }
     });
 }
+
 
 function generateCombinedSVG(letters, combinedViewBox, wordClass, maxHeight) {
     const svgNS = "http://www.w3.org/2000/svg";
@@ -32,30 +37,44 @@ function generateCombinedSVG(letters, combinedViewBox, wordClass, maxHeight) {
     svg.setAttribute("height", "100%");
     svg.setAttribute("shape-rendering", "geometricPrecision");
     svg.style.opacity = "1";
+
     let totalWidth = 0;
     const groups = [];
     const heightPercentage = 0.1;
     const baseSpacing = 200 * heightPercentage;
+    const spaceWidth = baseSpacing * letterSpacingMultiplier * 2; // Adjust this to control space size
+
     letters.forEach(letter => {
-        const letterData = svgChars[letter.toUpperCase()];
-        if (letterData) {
-            const g = document.createElementNS(svgNS, "g");
-            g.setAttribute("class", `letter-${letter.toLowerCase()}`);
-            g.setAttribute("data-letter", letter.toUpperCase());
-            g.setAttribute("data-width", letterData.viewBox.split(' ')[2]);
-            const path = document.createElementNS(svgNS, "path");
-            path.setAttribute("d", letterData.path);
-            path.setAttribute("class", `letter-${letter.toLowerCase()}-path`);
-            path.setAttribute("fill", svgColor);
-            g.appendChild(path);
+        if (letter === ' ') {
+            const g = document.createElementNS(svgNS, "g");  // Dummy group for space
+            g.setAttribute("data-letter", " ");
+            g.setAttribute("data-width", spaceWidth);
             svg.appendChild(g);
             groups.push(g);
-            totalWidth += parseInt(letterData.viewBox.split(' ')[2]) + baseSpacing * letterSpacingMultiplier;
+            totalWidth += spaceWidth;  // Increment totalWidth for space
         } else {
-            console.error(`No SVG data found for letter: ${letter}`);
+            const letterData = svgChars[letter.toUpperCase()];
+            if (letterData) {
+                const g = document.createElementNS(svgNS, "g");
+                g.setAttribute("class", `letter-${letter.toLowerCase()}`);
+                g.setAttribute("data-letter", letter.toUpperCase());
+                g.setAttribute("data-width", letterData.viewBox.split(' ')[2]);
+                const path = document.createElementNS(svgNS, "path");
+                path.setAttribute("d", letterData.path);
+                path.setAttribute("class", `letter-${letter.toLowerCase()}-path`);
+                path.setAttribute("fill", svgColor);
+                g.appendChild(path);
+                svg.appendChild(g);
+                groups.push(g);
+                totalWidth += parseInt(letterData.viewBox.split(' ')[2]) + baseSpacing * letterSpacingMultiplier;
+            } else {
+                console.error(`No SVG data found for letter: ${letter}`);
+            }
         }
     });
+
     applyKerning(groups, kerningPairs, baseSpacing);
+
     const aspectRatio = totalWidth / 800;
     const scaledWidth = 200 * aspectRatio;
     const maxHeightScale = maxHeight / 200;
@@ -64,19 +83,30 @@ function generateCombinedSVG(letters, combinedViewBox, wordClass, maxHeight) {
     return svg;
 }
 
+
 function displayWords(words, maxHeight) {
     const wideContainer = document.getElementById("wide-container");
     wideContainer.innerHTML = "";
 
     words.forEach(word => {
-        const totalWidth = word.split('').reduce((acc, letter) => acc + parseInt(svgChars[letter.toUpperCase()].viewBox.split(' ')[2]) + (200 * 0.1 * letterSpacingMultiplier), 0);
-        const combinedViewBox = `0 0 ${totalWidth} 800`;
+        const totalWidth = word.split('').reduce((acc, letter) => {
+            if (letter === ' ') {
+                return acc + (200 * 0.1 * letterSpacingMultiplier * 2); // Extra spacing for spaces
+            } else {
+                return acc + parseInt(svgChars[letter.toUpperCase()].viewBox.split(' ')[2]) + (200 * 0.1 * letterSpacingMultiplier);
+            }
+        }, 0);
+
+        const endPadding = 0; // Adjust this to control space at the end
+        const combinedViewBox = `0 0 ${totalWidth + endPadding} 800`;
+
         const svgElement = generateCombinedSVG(word.split(''), combinedViewBox, `word-svg word-${word.replace(/\s/g, '-').toLowerCase()}`, maxHeight);
         wideContainer.appendChild(svgElement);
     });
 
     animateIntroAndSlide();
 }
+
 
 let slideTimeline;
 

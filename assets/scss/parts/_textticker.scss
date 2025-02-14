@@ -43,16 +43,7 @@
     text-align: center;
   }
   ///text block slider end
-  #svg-container {
-    display: flex;
-    justify-content: flex-start;
-    overflow: hidden;
-    height: 170px;
-    position: relative;
-    width: 100%;
-    transform: translateZ(0);
-    will-change: transform;
-  }
+
   
   .wide-container {
     display: flex;

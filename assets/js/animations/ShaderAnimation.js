@@ -120,8 +120,6 @@ class ForwardShaderAnimation {
       });
       this.shaderAdded = true;
     }
-
-    console.log("Revealing image: enterTime -> 1");
     gsap.to(this.options.uniforms, {
       duration: 1,
       enterTime: 1,  // Reveal image
@@ -135,7 +133,6 @@ class ForwardShaderAnimation {
   }
 
   reversePlay() {
-    console.log("Hiding image: enterTime -> 0");
     gsap.to(this.options.uniforms, {
       duration: 1,
       enterTime: 0,  // Hide image

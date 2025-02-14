@@ -1,10 +1,13 @@
- // index.js
+// index.js
 import gsap from 'gsap';
 import './main.js';
 import { initWordStack, animateWordsUp, animateWordsDown, playTimeline, pauseTimeline } from './animations/wordstack';
 import { ForwardShaderAnimation } from './animations/ShaderAnimation';
 
 document.addEventListener('DOMContentLoaded', function () {
+
+    // Initialize Lenis on page load
+
     var menuOverlay = document.getElementById('menu-overlay');
     var menuContent = document.querySelector('.menu-content');
     var primaryMenuItems = document.querySelectorAll('.primary-menu li');
@@ -22,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const shaderAnim = new ForwardShaderAnimation(logoElement);
 
-
     gsap.set(lines, { opacity: 0 }); // Set initial state for submenu items
 
     let wordStackInitialized = false;
@@ -39,6 +41,10 @@ document.addEventListener('DOMContentLoaded', function () {
             animateWordsUp();
             playTimeline();
         }
+
+        // Disable background scrolling via JS (optional if you’re using CSS)
+        // Pause Lenis scrolling
+
 
         menuOverlay.style.visibility = 'visible'; // Make overlay visible
         gsap.set(menuOverlay, { transformOrigin: 'bottom center' });
@@ -73,12 +79,11 @@ document.addEventListener('DOMContentLoaded', function () {
         // Create a timeline for the closing animation
         const closeTimeline = gsap.timeline({
             onComplete: function() {
-               // pauseTimeline();
-                menuOverlay.style.visibility = 'hidden'; // Hide overlay after animation
+                // Hide overlay after animation
+                menuOverlay.style.visibility = 'hidden';
                 gsap.set(primaryMenuItems, { opacity: 0, y: 50 }); // Hide primary menu items when menu is closed
                 gsap.set(contactItems, { opacity: 0, y: 50 }); // Hide contact items when menu is closed
                 gsap.set(submenuItems, { opacity: 0, y: 50 }); // Hide submenu items when menu is closed
-               // destroyWordStack();
             }
         });
 
@@ -106,10 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     menuContainer.addEventListener('mouseenter', () => {
-        console.log('Mouse entered menu container');
         if (!menuContainer.classList.contains('open')) {
-            console.log('Menu container is not open, applying transformations');
-
             gsap.to(navburgerCircle, {
                 clipPath: 'circle(36%)',
                 duration: 0.3,
@@ -123,17 +125,13 @@ document.addEventListener('DOMContentLoaded', function () {
             gsap.to(menuText, {
                 x: -6, /* Slide text to the left */
                 duration: 0.3,
-                ease: 'power1.inOut',
-                onUpdate: () => {
-                    const transformValue = gsap.getProperty(menuText, 'x');
-                }
+                ease: 'power1.inOut'
             });
         }
     });
 
     menuContainer.addEventListener('mouseleave', () => {
         if (!menuContainer.classList.contains('open')) {
-
             gsap.to(navburgerCircle, {
                 clipPath: 'circle(10%)',
                 duration: 0.3,
@@ -147,10 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
             gsap.to(menuText, {
                 x: '0rem',
                 duration: 0.3,
-                ease: 'power1.inOut',
-                onUpdate: () => {
-                    const transformValue = gsap.getProperty(menuText, 'x');
-                }
+                ease: 'power1.inOut'
             });
         }
     });
@@ -158,8 +153,10 @@ document.addEventListener('DOMContentLoaded', function () {
     menuContainer.addEventListener('click', () => {
         menuContainer.classList.toggle('open');
         if (menuContainer.classList.contains('open')) {
-            // Open the menu animations
-            openMenu();  // (Assume openMenu() is defined elsewhere)
+            // Add the class to disable scroll via CSS
+            document.body.classList.add('overlay-active');
+            // Call openMenu() to animate and disable scrolling via JS
+            openMenu();
             gsap.to(clipBox, {
                 clipPath: 'inset(0 0 0 calc(100% - 50px) round 25px)',
                 duration: 0.3,
@@ -179,7 +176,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 opacity: 1,
                 rotate: 45,
                 y: 0,
-                z: 0,
                 duration: 0.3,
                 ease: 'power1.inOut'
             });
@@ -187,7 +183,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 opacity: 1,
                 rotate: -45,
                 y: 0,
-                z: 0,
                 duration: 0.3,
                 ease: 'power1.inOut'
             });
@@ -198,10 +193,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 delay: 0.6,
                 ease: 'power1.inOut'
             });
-            // For repeated animation, you might want to restart the timeline:
+            gsap.to(img2Element, {
+                opacity: 1,
+                duration: 0.1,
+                delay: 0.6,
+                ease: 'power1.inOut'
+            });
+            gsap.set(img2Element, { className: '+=display-blk' });
         } else {
-            // Close the menu animations
-            closeMenu();  // (Assume closeMenu() is defined elsewhere)
+            // Remove the class to re-enable scrolling via CSS
+            document.body.classList.remove('overlay-active');
+            // Call closeMenu() to animate and re-enable scrolling via JS
+            closeMenu();
             gsap.to(clipBox, {
                 clipPath: 'inset(0 0 0 0 round 25px)',
                 duration: 0.5,
@@ -228,24 +231,31 @@ document.addEventListener('DOMContentLoaded', function () {
             gsap.to(lines[0], {
                 rotate: 0,
                 y: -4,
-                z: 0,
                 duration: 0.5,
                 ease: 'power1.inOut'
             });
             gsap.to(lines[1], {
                 rotate: 0,
                 y: 4,
-                z: 0,
                 duration: 0.5,
                 ease: 'power1.inOut'
             });
             gsap.to(logoElement, {
-                opacity: 1,
+                autoAlpha: 1,
                 duration: 0.1,
                 delay: 0.6,
                 ease: 'power1.inOut'
             });
+            gsap.to(img2Element, {
+                autoAlpha: 0,
+                duration: 0.1,
+                delay: 0.6,
+                ease: 'power1.inOut',
+                onComplete: () => {
+                    img2Element.classList.add('display-none');
+                }
+            });
         }
-      });
-    
     });
+});
+

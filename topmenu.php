@@ -42,9 +42,8 @@
                 </div>
             <div class="container-fluid fixed-bottom margin-medium">
                 <div class="contact-info text-start  halfscreen bottomleftinfo">
-                            <p class="contact-item">MNRDSGN</p>
-                            <p class="contact-item">info@mnrdsgn.com</p>     
-                            <p class="contact-item">[917] 417-5280</p>
+                            <p class="contact-item"><span class="email-text">MNRDSGN</span></p>
+                            <p class="contact-item"><span class="email-text">info@mnrdsgn.com</span></p>
                         </div>
                 
                         <div class="sideicons submenu text-end">
@@ -69,9 +68,10 @@
                                 </svg>
                             </a>
                        </div>
+                       <div id="svg-container2">
                 <div id="svg-container">
                    <div id="wide-container"></div>
-                </div>
+                </div>      </div>
             </div>
         </div>
     </div>

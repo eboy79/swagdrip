@@ -153,7 +153,11 @@
 }
 ul.primary-menu{list-style: none;}
 
-
+.contact-item {
+    will-change: transform, opacity;
+    /* Optionally, force a 3D transform */
+    transform: translateZ(0);
+  }
 
 .nav-section {
     height: 35vh;
@@ -178,7 +182,10 @@ ul.primary-menu{list-style: none;}
 .sideicons {
     position: absolute;
     right: 13px;
-    top: -27%;
+    top: -52%;
+    @media (min-width: $screen-sm) {
+        top: -34%;
+              }
 }
 .relativerow{
 
@@ -197,3 +204,22 @@ ul.primary-menu{list-style: none;}
     @media (min-width: $screen-sm) {
 padding: 20px 0;
       }}
+      #svg-container {
+        display: flex;
+        justify-content: flex-start;
+        overflow: hidden;
+        height: 100px;
+        position: relative;
+        width: 100%;
+        transform: translateZ(0);
+        will-change: transform;
+        @media (min-width: $screen-sm) {
+            height: 170px;
+                  }
+      }
+.word-svg{scale:.6;   
+     @media (min-width: $screen-sm) {
+    scale:1; 
+          }}
+          .display-none{display: none;}
+          .display-blk{display: block;}
